@@ -1,0 +1,40 @@
+name: Update data from Google Sheets
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # Daily at 09:00 UTC
+  workflow_dispatch:       # Manual trigger from the Actions tab
+
+permissions:
+  contents: write          # Needed so the job can commit data.json back
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install google-auth google-api-python-client openpyxl
+
+      - name: Run converter
+        env:
+          GOOGLE_SHEETS_CREDS: ${{ secrets.GOOGLE_SHEETS_CREDS }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+        run: |
+          python scripts/converter.py --sheets --countries GB DE ES -o data.json
+
+      - name: Commit and push
+        run: |
+          git config user.name "Maxwell Data Bot"
+          git config user.email "no-reply@maxwelladvisory.eu"
+          git add data.json
+          git diff --cached --quiet && echo "No changes" && exit 0
+          git commit -m "Auto-update data from Google Sheets [$(date -u +'%Y-%m-%d %H:%M:%S UTC')]"
+          git push

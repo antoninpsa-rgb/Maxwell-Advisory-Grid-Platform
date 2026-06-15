@@ -1,0 +1,1564 @@
+{
+  "version": "2026-06-12T16:51:40Z",
+  "countries": {
+    "GB": {
+      "meta": {
+        "lastUpdated": "19 May 2026",
+        "name": "United Kingdom",
+        "iso": "GB",
+        "currency": "GBP",
+        "currencySymbol": "£"
+      },
+      "macro": {},
+      "grid": "The UK runs a single national wholesale market (BETTA), priced half-hourly, with offshore wind setting the marginal mix increasingly often. Settlement is GBP-denominated, the system operator is NESO, and the principal regulator is Ofgem. Unlike Germany or Spain, the UK has no zonal pricing — but constraint costs and curtailment payments now route ~£2.4bn/yr of system-imbalance value to whoever sits on the right side of the bottleneck.",
+      "thesis": "The UK offers the most policy-aligned and bankable renewables market in Europe, anchored by a record £27bn AR7 auction round and a clear 2030 trajectory. Cannibalisation, curtailment (10 TWh wasted in 2025) and constraint costs now dominate the operational risk profile — meaning naked merchant exposure is no longer the trade. The winning structure is CfD-backed assets with co-located storage and route-to-market PPA tails.",
+      "scorecard": [
+        {
+          "label": "Renewable share of generation",
+          "value": 52.5,
+          "unit": "%",
+          "meta": "Wind 29 · Solar 6.9 · Bio 12",
+          "trend": "up",
+          "help": "The portion of all electricity Britain generated that came from renewable sources (wind, solar, biomass, hydro) rather than gas, coal or nuclear.",
+          "soWhat": "Past the halfway mark, the system increasingly sets prices off weather, not fuel — so capture price and curtailment matter more than headline strike prices.",
+          "source": "Full-year 2025 · DESNZ Energy Trends / NESO"
+        },
+        {
+          "label": "Renewable amount of generation",
+          "value": 152.5,
+          "unit": "TWh",
+          "meta": "Wind 87.1 · Solar 20 · Bio 27.1",
+          "trend": "up",
+          "help": "Total renewable electricity produced in 2025, in terawatt-hours (1 TWh = 1 billion kWh). Shows the absolute scale behind the percentage.",
+          "soWhat": "Wind does the heavy lifting (87 TWh). Solar is small in volume but growing fastest — and is where price cannibalisation bites first.",
+          "source": "Full-year 2025 · DESNZ Energy Trends"
+        },
+        {
+          "label": "2030 capacity gap",
+          "value": 115,
+          "unit": "GW",
+          "meta": "across solar, wind, BESS",
+          "trend": "warn",
+          "help": "Roughly how much new generation and storage capacity (in gigawatts) still has to be built to hit the 2030 Clean Power targets.",
+          "soWhat": "A gap this large is the demand signal: it has to be financed and built in under five years, which is the entire investment opportunity.",
+          "source": "Derived vs Clean Power 2030 targets · NESO"
+        },
+        {
+          "label": "AR7 auction volume",
+          "value": 14.7,
+          "unit": "GW",
+          "meta": "201 projects · £27bn unlocked",
+          "trend": "up",
+          "help": "Capacity awarded in Allocation Round 7 — the government's most recent CfD (Contracts for Difference) auction, held in Jan/Feb 2026.",
+          "soWhat": "A record round signals policy is working and gives a fresh cohort of bankable, government-backed projects to acquire.",
+          "source": "Jan/Feb 2026 · LCCC AR7 results"
+        },
+        {
+          "label": "Headline CfD strike (offshore)",
+          "value": 91.2,
+          "unit": "£/MWh",
+          "meta": "AR7 · 2024 prices · –19% vs ASP",
+          "trend": "flat",
+          "help": "The guaranteed price (per megawatt-hour) AR7 offshore wind will be paid under its 15-year CfD contract, indexed to inflation.",
+          "soWhat": "The strike sets the floor on revenue; everything earned above it is handed back. It is the number a CfD asset's returns are built on.",
+          "source": "AR7 · 2024 prices · LCCC"
+        },
+        {
+          "label": "Connection queue (Gate 2)",
+          "value": 283,
+          "unit": "GW",
+          "meta": "gen + storage · +99 GW demand",
+          "trend": "up",
+          "help": "Capacity that has reached Gate 2 — a firm grid-connection offer with a confirmed date and queue position — under the reformed (TMO4+) process. 283 GW is generation + storage; a further 99 GW is connecting demand.",
+          "soWhat": "This is the prioritised build pipeline. A Gate 2 position is the single biggest de-risking event in a project's life, and the central topic of this platform.",
+          "source": "NESO press release · 8 Dec 2025"
+        },
+        {
+          "label": "Day-ahead baseload (Q1'26 avg)",
+          "value": 94.66,
+          "unit": "£/MWh",
+          "meta": "Forward Apr-26: £101/MWh",
+          "trend": "flat",
+          "help": "The average wholesale price of round-the-clock power bought one day ahead, over the first quarter of 2026.",
+          "soWhat": "This is the merchant price an unhedged asset earns. The gap between it and the CfD strike is why contracted revenue is currently the safer trade.",
+          "source": "Q1 2026 average · NESO / market data"
+        },
+        {
+          "label": "Constraint cost run-rate",
+          "value": 2.37,
+          "unit": "£ bn / yr",
+          "meta": "Apr–May 2026 annualised",
+          "trend": "down",
+          "help": "Annualised cost of managing grid bottlenecks — chiefly paying wind farms to switch off when the cables south are full, plus paying gas to fire up instead.",
+          "soWhat": "The grid pays generators to stop when transmission is full; this creates locational arbitrage for whoever can store or absorb power on the right side of the bottleneck.",
+          "source": "Apr–May 2026 annualised · NESO"
+        },
+        {
+          "label": "Curtailment, 2025",
+          "value": 10,
+          "unit": "TWh",
+          "meta": "98% in Scotland · £363m paid",
+          "trend": "warn",
+          "help": "Renewable electricity that was generated but thrown away because the grid couldn't move it where it was needed. Almost all of it was Scottish wind.",
+          "soWhat": "10 TWh wasted, 98% in Scotland, tells you exactly where the bottleneck is — and where storage and transmission investment is most valuable.",
+          "source": "Full-year 2025 · NESO constraint data"
+        },
+        {
+          "label": "CP2030 CAPACITY REQUIREMENT",
+          "value": "204-231",
+          "unit": "GW",
+          "meta": "DESNZ CP2030 range, by 2030",
+          "trend": "up",
+          "help": "Requirements in term of generation, storage, interconnectors and flexibility to achieve Clean Power by 2030",
+          "soWhat": "These objectives are the demand signal for the next decade of investment. The gap between the current pipeline and the target is the opportunity.",
+          "source": "TMO4+ Impact Assessment - Ofgem"
+        }
+      ],
+      "pillars": {
+        "current": {
+          "title": "Current state",
+          "eyebrow": "Market fundamentals",
+          "accent": "blue",
+          "rows": [
+            [
+              "Total electricity generation",
+              "~290 TWh",
+              "Power actually generated in GB in 2025. (Total demand is higher, ~320 TWh, because the UK now imports roughly 10% of its power via interconnectors.)"
+            ],
+            [
+              "Renewable share",
+              "52.5%",
+              "Share of 2025 generation from wind, solar, biomass and hydro — matches the headline scorecard."
+            ],
+            [
+              "Fossil share",
+              "32%",
+              "Share from gas and a small amount of coal/oil. Falling as renewables and imports grow."
+            ],
+            [
+              "Nuclear share",
+              "12.3%",
+              "Share from the ageing nuclear fleet, most of which retires before 2030 — a looming firm-capacity gap."
+            ],
+            [
+              "Baseload price, day-ahead",
+              "£95/MWh",
+              "Typical wholesale price of round-the-clock power bought a day ahead."
+            ],
+            [
+              "Wholesale price volatility",
+              "High",
+              "Prices swing widely as the mix tilts to weather-driven wind and solar."
+            ],
+            [
+              "Sovereign rating",
+              "AA / Aa3",
+              "Credit ratings on UK government debt — a proxy for country and currency risk."
+            ],
+            [
+              "Ease of doing business",
+              "#7",
+              "World Bank ranking of how straightforward it is to operate commercially."
+            ]
+          ]
+        },
+        "trajectory": {
+          "title": "Trajectory",
+          "eyebrow": "Growth & pipeline",
+          "accent": "green",
+          "rows": [
+            [
+              "2030 offshore wind target",
+              "43–50 GW",
+              "Government's stated 2030 ambition for offshore wind capacity."
+            ],
+            [
+              "2030 onshore wind target",
+              "27–29 GW"
+            ],
+            [
+              "2030 solar target",
+              "45–47 GW"
+            ],
+            [
+              "2030 BESS target",
+              "23–27 GW",
+              "BESS = Battery Energy Storage Systems. Target storage capacity by 2030."
+            ],
+            [
+              "Total connection queue (Gate 2)",
+              "283 GW",
+              "Generation + storage holding firm Gate 2 grid offers under the reformed process."
+            ],
+            [
+              "AR7 volume awarded",
+              "14.7 GW",
+              "Capacity awarded in the latest CfD auction (Jan/Feb 2026)."
+            ],
+            [
+              "AR7 capex unlocked",
+              "£27 bn",
+              "Estimated investment the AR7 contracts make bankable."
+            ],
+            [
+              "Corporate PPA volume 2025 (10m)",
+              "2.1 GW signed",
+              "PPA = Power Purchase Agreement: a private long-term contract to buy a project's output, used to underpin financing."
+            ]
+          ]
+        },
+        "strengths": {
+          "title": "Strengths",
+          "eyebrow": "Enablers & bankability",
+          "accent": "green",
+          "rows": [
+            [
+              "Primary support mechanism",
+              "CfD",
+              "Contract for Difference: the state tops a project up to a fixed strike price for 15 years (and claws back any excess), removing price risk."
+            ],
+            [
+              "Offshore wind clearing price",
+              "£91.20/MWh",
+              "The strike price AR7 offshore wind cleared at."
+            ],
+            [
+              "Solar clearing price",
+              "£65.23/MWh",
+              "AR7 solar strike price — the cheapest technology in the round."
+            ],
+            [
+              "Onshore wind clearing price",
+              "£72.24/MWh"
+            ],
+            [
+              "Transmission CapEx",
+              "£19.8 bn",
+              "ASTI = Accelerated Strategic Transmission Investment: Ofgem's fast-track funding to build the wires that relieve the bottleneck."
+            ],
+            [
+              "Clean Industry Bonus (AR7)",
+              "£544 m",
+              "Extra payment rewarding offshore wind developers who invest in UK supply chains and cleaner manufacturing."
+            ],
+            [
+              "Market transparency",
+              "High"
+            ],
+            [
+              "PPA Depth",
+              "Leading EU"
+            ]
+          ]
+        },
+        "issues": {
+          "title": "Current issues",
+          "eyebrow": "Risks & headwinds",
+          "accent": "red",
+          "rows": [
+            [
+              "Constraint costs (annualised)",
+              "£2.37 bn",
+              "Cost of managing grid bottlenecks — mostly paying wind to switch off and gas to fill in."
+            ],
+            [
+              "Curtailment 2025",
+              "10 TWh",
+              "Renewable power generated but thrown away because the grid couldn't carry it; up 22% year-on-year."
+            ],
+            [
+              "Negative-pricing hours 2025",
+              "~180 hrs",
+              "Hours when there was so much wind/solar that wholesale prices fell below zero."
+            ],
+            [
+              "NSIP permitting (avg)",
+              "24–36 mo",
+              "NSIP = Nationally Significant Infrastructure Project: the consenting route large projects must clear, and how long it takes."
+            ],
+            [
+              "Solar capture rate (forecast 2035)",
+              "58%",
+              "Capture rate = the share of the average market price a solar farm actually earns. It falls as more solar floods the same sunny hours — 'cannibalisation'."
+            ],
+            [
+              "BESS pipeline oversupply",
+              "153 GW cut",
+              "Battery capacity NESO removed from the connection queue because it far exceeded what 2030 needs — connection is not scarce for batteries."
+            ],
+            [
+              "Cannibalisation risk",
+              "High (solar)",
+              "The tendency of a technology to depress the very prices it earns by all generating at once."
+            ],
+            [
+              "Distribution CapEx gap",
+              "£37–50 bn",
+              "Investment still needed in the lower-voltage local networks by 2050."
+            ]
+          ]
+        }
+      },
+      "technologies": {
+        "solar": {
+          "name": "Solar PV",
+          "tabStat": "22.1 GW · £65.23/MWh",
+          "headline": "The cheapest new-build asset class, but <em>co-location is now compulsory.</em>",
+          "thesis": "<p>Utility-scale solar is the lowest-LCOE technology in the UK and the fastest from FID to commissioning — typically 24 months for 50–150 MW. AR7 secured a <strong>record 4.9 GW across 157 projects at £65.23/MWh</strong>, 6.5% below AR6 and signalling the asset class has reached genuine scale.</p><p>The binding risk is <strong>cannibalisation</strong>: capture rates are projected to fall from 85% in 2026 to 58% by 2035. <strong>Co-location with BESS is now effectively standard</strong> — over 40% of AR7 Pot 1 capacity was co-located.</p><p>The strongest entry points are (i) acquiring AR6/AR7-awarded sites in late development for portfolio scale; (ii) repowering older sub-5 MW RO sites with storage retrofits; (iii) distribution-connected portfolios benefiting from local supply-demand matching.</p>",
+          "stats": [
+            [
+              "Installed",
+              "22.1 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "45–47 GW",
+              ""
+            ],
+            [
+              "Gap to target",
+              "23–25 GW",
+              ""
+            ],
+            [
+              "AR7 strike",
+              "£65.23/MWh",
+              ""
+            ],
+            [
+              "Pipeline (approved 12m)",
+              "6.1 GW",
+              ""
+            ],
+            [
+              "Build time",
+              "24 months",
+              "",
+              "Time from Final Investment Decision (the go/no-go funding commitment) to the plant generating — fast for solar."
+            ],
+            [
+              "Capture rate forecast (2035)",
+              "58%",
+              "",
+              "The share of the average market price solar is forecast to actually earn by 2035, down from ~85% today — the core 'cannibalisation' risk."
+            ],
+            [
+              "Bankability score",
+              "8 / 10",
+              ""
+            ]
+          ]
+        },
+        "onshore": {
+          "name": "Onshore Wind",
+          "tabStat": "15.5 GW · £72.24/MWh",
+          "headline": "<em>England re-opens</em> after a decade-long de-facto ban.",
+          "thesis": "<p>Onshore wind clears at the second-lowest strike price in the system. It benefits from higher and more dispersed capacity factors than solar (40–45% vs 11–13%), which softens cannibalisation pressure substantially.</p><p>AR7 awarded <strong>1.3 GW across 28 projects at £72.24/MWh</strong> (+2% vs AR6 on inflationary pressures). 87% of capacity remains in Scotland — but the first English onshore wind projects in a decade were awarded, opening a new geography for early-movers with land control.</p><p>Watch curtailment risk: Scottish projects face the worst exposure in the UK (98% of 2025 curtailment was Scottish). Price in a 5–15% revenue haircut versus nameplate, or insist on co-located BESS.</p>",
+          "stats": [
+            [
+              "Installed",
+              "15.5 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "27–29 GW",
+              ""
+            ],
+            [
+              "Gap to target",
+              "11.5 GW",
+              ""
+            ],
+            [
+              "AR7 strike",
+              "£72.24/MWh",
+              ""
+            ],
+            [
+              "AR7 volume",
+              "1.3 GW",
+              ""
+            ],
+            [
+              "Scotland share of AR7",
+              "87%",
+              ""
+            ],
+            [
+              "Capacity factor",
+              "40–45%",
+              ""
+            ],
+            [
+              "Bankability score",
+              "7 / 10",
+              ""
+            ]
+          ]
+        },
+        "offshore": {
+          "name": "Offshore Wind",
+          "tabStat": "16.6 GW · £91.20/MWh",
+          "headline": "Megaprojects deliver scale — but <em>2030 delivery concentration is the risk.</em>",
+          "thesis": "<p>The UK runs the world's second-largest offshore wind fleet — <strong>16.6 GW operational</strong>, ~20% of global capacity, with a further <strong>11.7 GW under construction</strong>. The 2030 target of 43–50 GW means ~26 GW must come online inside five years.</p><p>AR7 was a major reset after the AR5 zero-bid failure: <strong>8.4 GW awarded at £91.20/MWh</strong>, 19% below the Administrative Strike Price. Strike prices reflect the post-2022 reality of steel, vessels and financing costs, but competition has returned.</p><p>Key projects: Dogger Bank South East + West (3 GW, RWE), Norfolk Vanguard East + West (3 GW), Berwick Bank Phase B (1.38 GW), Awel y Môr (775 MW). <strong>3.78 GW of AR7 capacity must deliver in 2030/31</strong> — leaving minimal tolerance for slippage.</p>",
+          "stats": [
+            [
+              "Operational",
+              "16.6 GW",
+              "large",
+              "Operational UK offshore wind, ~20% of global capacity and the world's second-largest fleet after China (Norton Rose Fulbright, 2025/26; RenewableUK cites ~16.1 GW early 2026)."
+            ],
+            [
+              "Under construction",
+              "11.7 GW",
+              "",
+              "Capacity in active construction, due online by 2027–28."
+            ],
+            [
+              "2030 target",
+              "43–50 GW",
+              ""
+            ],
+            [
+              "AR7 strike (England/Wales)",
+              "£91.20/MWh",
+              ""
+            ],
+            [
+              "AR7 strike (Scotland)",
+              "£89.49/MWh",
+              ""
+            ],
+            [
+              "Floating offshore (AR7)",
+              "£216.49/MWh",
+              ""
+            ],
+            [
+              "AR7 capex unlocked",
+              "£22 bn",
+              ""
+            ],
+            [
+              "Bankability score",
+              "8 / 10",
+              ""
+            ]
+          ]
+        },
+        "bess": {
+          "name": "BESS",
+          "tabStat": "6.8 GW · £69k/MW/yr",
+          "headline": "Highest-conviction adjacency — <em>but oversupplied at pipeline level.</em>",
+          "thesis": "<p>BESS is the highest-conviction adjacency play, but the pipeline is <strong>structurally oversupplied</strong>. The reform prioritised ~83 GW of battery storage to Gate 2, while a further <strong>~153 GW received only Gate 1 and was not prioritised</strong> — far beyond the 23–27 GW the system needs by 2030. Connection capacity is simply not the moat for batteries.</p><p>April 2026 revenues normalised to <strong>£69k/MW/year</strong> (–6% on month) as merchant returns increasingly depend on cycling discipline, optimiser quality and locational basis. Record solar generation drove prices to –£79/MWh.</p><p>Three signals to price into your model: (1) <strong>CMP470 commitment fees</strong> may filter oversupply, favouring committed developers; (2) the <strong>Cap & Floor LDES scheme</strong> opens a regulated revenue stream for >6h assets — Window 1 had 77 projects, 28.7 GW eligible; (3) the <strong>top 4 operators</strong> (Zenobe, Gresham House, Amp, Carlton) will each control >1 GW by 2027 — size now for M&A consolidation.</p>",
+          "stats": [
+            [
+              "Operational",
+              "6.8 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "23–27 GW",
+              ""
+            ],
+            [
+              "Pipeline (Gate 2)",
+              "~83 GW",
+              "",
+              "Battery capacity holding a firm Gate 2 connection offer — already more than triple the 2030 target."
+            ],
+            [
+              "Gate 1 overhang",
+              "~153 GW",
+              "",
+              "Extra battery capacity that applied but was not prioritised. Shows connection is abundant, not scarce, for BESS."
+            ],
+            [
+              "Q1 2026 revenue (avg)",
+              "£69k/MW/yr",
+              "",
+              "Average merchant revenue per MW of battery — driven by trading the daily price spread."
+            ],
+            [
+              "Average duration trend",
+              "1.3h → 1.8h",
+              ""
+            ],
+            [
+              "LDES Cap & Floor",
+              "28.7 GW",
+              ""
+            ],
+            [
+              "Bankability score",
+              "6 / 10",
+              ""
+            ]
+          ]
+        },
+        "interconnectors": {
+          "name": "Interconnectors",
+          "tabStat": "9.8 GW · Cap & Floor",
+          "headline": "Regulated returns, <em>scarcity rents</em> on every cable.",
+          "thesis": "<p>The UK operates <strong>9.8 GW of operational interconnector capacity</strong> across nine links — IFA, IFA2, BritNed, Nemo Link, NSL, ElecLink, Viking Link, Greenlink and Moyle — connecting France, the Netherlands, Belgium, Norway, Denmark and Ireland. Average utilisation runs at 55–65%, with Viking Link (UK–Denmark, 1.4 GW, 2023) and NSL (UK–Norway, 1.4 GW) among the most recent additions.</p><p>The <strong>Ofgem Cap & Floor regime</strong> is the bankability story: regulated revenue floor at WACC + capacity payments, with a cap that hands excess upside back to consumers. The result is utility-grade returns with limited downside — closer to regulated transmission than merchant power.</p><p>Pipeline includes <strong>LionLink (1.8 GW UK–Netherlands)</strong>, Nautilus (1.4 GW UK–Belgium), Eastern Green Link 1/2 (HVDC reinforcement) and Tarchon (2 GW UK–Germany). The Eastern Green Links are technically transmission, not interconnection, but compete for the same supply chain and HVDC capacity.</p>",
+          "stats": [
+            [
+              "Operational capacity",
+              "9.8 GW",
+              "large",
+              "Total import/export capacity across the operational interconnector fleet (Ofgem, Jan 2025)."
+            ],
+            [
+              "Number of links",
+              "9 operational",
+              "",
+              "Nine subsea HVDC cables connecting GB to six neighbouring markets."
+            ],
+            [
+              "2030 ambition",
+              "~18 GW",
+              ""
+            ],
+            [
+              "Regulatory regime",
+              "Cap & Floor",
+              "",
+              "Ofgem scheme guaranteeing a minimum return (floor) and capping the upside — utility-grade, near-regulated economics."
+            ],
+            [
+              "Average utilisation",
+              "55–65%",
+              ""
+            ],
+            [
+              "Pipeline awarded",
+              "5.6 GW",
+              ""
+            ],
+            [
+              "Typical contract tenor",
+              "25 years",
+              ""
+            ],
+            [
+              "Bankability score",
+              "9 / 10",
+              ""
+            ]
+          ]
+        },
+        "ldes": {
+          "name": "Long Duration",
+          "tabStat": "2.8 GW · Cap & Floor",
+          "headline": "<em>First regulated revenue scheme</em> for >6h storage in Europe.",
+          "thesis": "<p>Long Duration Energy Storage is defined as ≥6 hours discharge under the Ofgem Cap & Floor scheme launched in 2024. Today's operational fleet is essentially the legacy pumped hydro estate — <strong>Dinorwig (1.7 GW), Cruachan (440 MW), Ffestiniog (360 MW), Foyers (300 MW)</strong> — totalling ~2.8 GW with no greenfield additions in three decades.</p><p>The <strong>Cap & Floor Window 1</strong> closed in 2025 with 77 projects and 28.7 GW eligible capacity. Awards target a balanced mix of established (pumped hydro: Coire Glas 1.5 GW, Cruachan 2 600 MW) and novel chemistries (8h+ lithium, vanadium flow, compressed air, liquid air). Decision expected H2 2026.</p><p>Investment entry points: (1) developers with shovel-ready pumped hydro consent (SSE, Drax, ILI Group); (2) novel-tech vendors with bankable warranties — Highview, Energy Dome, Invinity; (3) project-level positions in awarded sites once Window 1 results clear.</p>",
+          "stats": [
+            [
+              "Operational",
+              "2.8 GW",
+              "large",
+              "Today's long-duration storage is essentially the legacy pumped-hydro estate — no greenfield additions in three decades."
+            ],
+            [
+              "Cap & Floor eligible",
+              "28.7 GW",
+              "",
+              "Capacity that entered Ofgem's first LDES Cap & Floor window — the first regulated revenue scheme for ≥6h storage in Europe."
+            ],
+            [
+              "2030 ambition",
+              "5–7 GW",
+              ""
+            ],
+            [
+              "Window 1 projects",
+              "77",
+              ""
+            ],
+            [
+              "Lead pumped project",
+              "Coire Glas (1.5GW)",
+              ""
+            ],
+            [
+              "Minimum duration",
+              "≥6 hours",
+              "",
+              "LDES is defined as storage able to discharge for at least six hours — the threshold for Cap & Floor support."
+            ],
+            [
+              "Typical project capex",
+              "£500m–£1.5bn",
+              ""
+            ],
+            [
+              "Bankability score",
+              "7 / 10",
+              ""
+            ]
+          ]
+        }
+      },
+      "timeSeries": {
+        "capacityHistory": [
+          {
+            "year": 2022,
+            "solar": 14.6,
+            "onshore": 14.1,
+            "offshore": 13.9,
+            "bess": 1.6
+          },
+          {
+            "year": 2023,
+            "solar": 15.7,
+            "onshore": 14.8,
+            "offshore": 14.8,
+            "bess": 2.9
+          },
+          {
+            "year": 2024,
+            "solar": 19.6,
+            "onshore": 15.2,
+            "offshore": 15.5,
+            "bess": 4.5
+          },
+          {
+            "year": 2025,
+            "solar": 21.5,
+            "onshore": 15.5,
+            "offshore": 16,
+            "bess": 6
+          },
+          {
+            "year": 2026,
+            "solar": 22.1,
+            "onshore": 15.5,
+            "offshore": 16.6,
+            "bess": 6.8
+          }
+        ],
+        "target2030": {
+          "solar": [
+            45,
+            47
+          ],
+          "onshore": [
+            27,
+            29
+          ],
+          "offshore": [
+            43,
+            50
+          ],
+          "bess": [
+            23,
+            27
+          ]
+        },
+        "strikeHistory": [
+          {
+            "round": "AR4 ('22)",
+            "solar": 45.99,
+            "onshore": 42.47,
+            "offshore": 37.35
+          },
+          {
+            "round": "AR5 ('23)",
+            "solar": 47,
+            "onshore": 52.29,
+            "offshore": null
+          },
+          {
+            "round": "AR6 ('24)",
+            "solar": 69.78,
+            "onshore": 70.83,
+            "offshore": 82.16
+          },
+          {
+            "round": "AR7 ('26)",
+            "solar": 65.23,
+            "onshore": 72.24,
+            "offshore": 91.2
+          }
+        ]
+      },
+      "loadFactors": [
+        {
+          "key": "solar",
+          "name": "Solar PV",
+          "value": 11,
+          "unit": "%",
+          "meta": "DUKES 2024 fleet average. South-England sites peak at 13%.",
+          "source": "DESNZ DUKES",
+          "help": "Load factor = actual output as a share of theoretical maximum if it ran flat-out all year. Solar is low because the sun isn't always up."
+        },
+        {
+          "key": "onshore",
+          "name": "Onshore wind",
+          "value": 29,
+          "unit": "%",
+          "meta": "UK fleet average. Scottish sites can reach 35%+; English sites ~25–28%.",
+          "source": "DESNZ DUKES",
+          "help": "Share of the year onshore turbines effectively run at full power. Higher and steadier than solar, which softens cannibalisation."
+        },
+        {
+          "key": "offshore",
+          "name": "Offshore wind",
+          "value": 41,
+          "unit": "%",
+          "meta": "Fixed-bottom fleet average. New-build (Dogger Bank class) ~50%.",
+          "source": "DESNZ DUKES",
+          "help": "Offshore wind's effective full-power hours as a share of the year — the highest of any renewable, thanks to stronger, steadier sea winds."
+        },
+        {
+          "key": "bess",
+          "name": "BESS",
+          "value": 15,
+          "unit": "%",
+          "meta": "Equivalent full-cycle hours / 8,760. Rises with duration shift to 2h+.",
+          "source": "Modo Energy",
+          "help": "For batteries this reflects how often they charge and discharge, not weather — it rises as durations lengthen toward 2h+."
+        },
+        {
+          "key": "interconnectors",
+          "name": "Interconnectors",
+          "value": 60,
+          "unit": "%",
+          "meta": "Capacity utilisation across the 9.8 GW operational fleet, 2025.",
+          "source": "NESO ESO data",
+          "help": "How fully the import/export cables are used across the year, driven by price differences between GB and neighbouring markets."
+        },
+        {
+          "key": "ldes",
+          "name": "Long Duration",
+          "value": 9,
+          "unit": "%",
+          "meta": "Pumped hydro fleet historical. Rises sharply once Cap & Floor activates.",
+          "source": "DESNZ / Ofgem",
+          "help": "Long-duration storage cycles infrequently today; utilisation should rise once the Cap & Floor scheme brings new assets online."
+        }
+      ]
+    },
+    "DE": {
+      "meta": {
+        "name": "Germany",
+        "iso": "DE",
+        "currency": "EUR",
+        "currencySymbol": "€",
+        "population": "84m",
+        "lastUpdated": "19 May 2026"
+      },
+      "macro": {
+        "sovereign": "S&P AAA · Aaa",
+        "policyRate": "3.25% (ECB)",
+        "ratingOutlook": "Stable"
+      },
+      "grid": "Germany operates a single national price zone within the wider European coupled market, despite repeated EU debate about zonal splitting. The system is balanced across four TSOs (50Hertz, TenneT, Amprion, TransnetBW) with €4bn+/yr of redispatch costs running north–south. EEG 2024 has narrowed subsidy support to merchant-first, raising the bar for new build. [PLACEHOLDER DATA]",
+      "thesis": "Germany combines Europe's largest renewables fleet with severe grid bottleneck and negative-pricing exposure. The shift to merchant-first market design under EEG 2024 means subsidy support has narrowed substantially, raising the bar for new development. Co-located storage and corporate PPAs are the dominant route to bankability. [PLACEHOLDER DATA]",
+      "scorecard": [
+        {
+          "label": "Renewable share of generation",
+          "value": 55,
+          "unit": "%",
+          "meta": "Onshore 24 · Solar 15 · Bio 8",
+          "trend": "up"
+        },
+        {
+          "label": "2030 capacity gap",
+          "value": 190,
+          "unit": "GW",
+          "meta": "highest in EU",
+          "trend": "warn"
+        },
+        {
+          "label": "Solar deployment 2025",
+          "value": 17,
+          "unit": "GW",
+          "meta": "EU's largest",
+          "trend": "up"
+        },
+        {
+          "label": "Day-ahead baseload (Q1'26)",
+          "value": 88,
+          "unit": "€/MWh",
+          "meta": "High volatility",
+          "trend": "flat"
+        },
+        {
+          "label": "Negative-price hours 2025",
+          "value": 460,
+          "unit": "hrs",
+          "meta": "Highest in EU",
+          "trend": "warn"
+        }
+      ],
+      "pillars": {
+        "current": {
+          "title": "Current state",
+          "eyebrow": "Market fundamentals",
+          "accent": "blue",
+          "rows": [
+            [
+              "Total generation",
+              "~510 TWh"
+            ],
+            [
+              "Renewable share",
+              "55%"
+            ],
+            [
+              "Coal share",
+              "23%"
+            ],
+            [
+              "Gas share",
+              "15%"
+            ],
+            [
+              "Nuclear share",
+              "0%"
+            ],
+            [
+              "Day-ahead baseload",
+              "€88/MWh"
+            ]
+          ]
+        },
+        "trajectory": {
+          "title": "Trajectory",
+          "eyebrow": "Growth & pipeline",
+          "accent": "green",
+          "rows": [
+            [
+              "2030 solar target",
+              "215 GW"
+            ],
+            [
+              "2030 onshore target",
+              "115 GW"
+            ],
+            [
+              "2030 offshore target",
+              "30 GW"
+            ],
+            [
+              "2030 BESS target",
+              "100 GWh"
+            ],
+            [
+              "EEG 2024 auction cadence",
+              "Quarterly"
+            ]
+          ]
+        },
+        "strengths": {
+          "title": "Strengths",
+          "eyebrow": "Enablers & bankability",
+          "accent": "green",
+          "rows": [
+            [
+              "Primary support",
+              "EEG market premium"
+            ],
+            [
+              "Solar tender clearing",
+              "€68/MWh"
+            ],
+            [
+              "Offshore wind ZD support",
+              "Contract for Difference (new)"
+            ],
+            [
+              "Corporate PPA depth",
+              "Deep — top-2 EU"
+            ]
+          ]
+        },
+        "issues": {
+          "title": "Current issues",
+          "eyebrow": "Risks & headwinds",
+          "accent": "red",
+          "rows": [
+            [
+              "Negative-price hours",
+              "460/yr (highest EU)"
+            ],
+            [
+              "Solar capture rate compression",
+              "−40% since 2022"
+            ],
+            [
+              "Permitting (onshore wind)",
+              "5+ years average"
+            ],
+            [
+              "Grid constraint costs",
+              "€4bn+ / yr"
+            ]
+          ]
+        }
+      },
+      "technologies": {
+        "solar": {
+          "name": "Solar PV",
+          "tabStat": "95 GW · €68/MWh",
+          "headline": "<em>Europe's deepest solar market</em> — but cannibalisation is severe.",
+          "thesis": "<p>Germany has Europe's largest installed solar fleet at ~95 GW with 17 GW added in 2025 alone. Tender clearing prices around €68/MWh remain competitive, but solar capture rates have fallen ~40% since 2022 and negative-pricing hours are the highest in Europe.</p><p><strong>Co-location with BESS is now critical</strong>. Standalone merchant solar is increasingly hard to underwrite without aggressive curtailment assumptions.</p>",
+          "stats": [
+            [
+              "Installed",
+              "95 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "215 GW",
+              ""
+            ],
+            [
+              "Annual additions 2025",
+              "17 GW",
+              ""
+            ],
+            [
+              "Tender clearing",
+              "€68/MWh",
+              ""
+            ]
+          ]
+        },
+        "onshore": {
+          "name": "Onshore Wind",
+          "tabStat": "63 GW · €74/MWh",
+          "headline": "<em>Permitting reform</em> finally unlocks the pipeline.",
+          "thesis": "<p>Germany targets 115 GW of onshore wind by 2030 from ~63 GW today — a doubling that requires unprecedented permitting throughput. The 2024 acceleration laws have started to compress timelines from 5–7 years to 2–3, but execution remains the binding constraint.</p>",
+          "stats": [
+            [
+              "Installed",
+              "63 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "115 GW",
+              ""
+            ],
+            [
+              "Annual additions 2025",
+              "5 GW",
+              ""
+            ],
+            [
+              "Tender clearing",
+              "€74/MWh",
+              ""
+            ]
+          ]
+        },
+        "offshore": {
+          "name": "Offshore Wind",
+          "tabStat": "9.2 GW · CfD-new",
+          "headline": "<em>Negative bidding</em> dominated — now retreating.",
+          "thesis": "<p>Germany pioneered zero-subsidy offshore wind, but the negative-bidding era (developers paying for sites) has reached its limit. The 2024–25 tenders saw weaker competition, prompting a shift toward two-sided CfDs in 2025+.</p>",
+          "stats": [
+            [
+              "Operational",
+              "9.2 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "30 GW",
+              ""
+            ],
+            [
+              "Under construction",
+              "4 GW",
+              ""
+            ],
+            [
+              "Mechanism",
+              "Two-sided CfD (new)",
+              ""
+            ]
+          ]
+        },
+        "bess": {
+          "name": "BESS",
+          "tabStat": "12 GWh · merchant",
+          "headline": "<em>Merchant-driven</em> European leader.",
+          "thesis": "<p>Germany has Europe's largest BESS fleet at ~12 GWh, growing rapidly. Revenue stacks rely on intraday and balancing rather than capacity markets, making operator quality the key value driver.</p>",
+          "stats": [
+            [
+              "Installed",
+              "12 GWh",
+              "large"
+            ],
+            [
+              "2030 target",
+              "100 GWh",
+              ""
+            ],
+            [
+              "Pipeline",
+              "60+ GWh",
+              ""
+            ],
+            [
+              "Annual additions 2025",
+              "9 GWh",
+              ""
+            ]
+          ]
+        },
+        "interconnectors": {
+          "name": "Interconnectors",
+          "tabStat": "~30 GW · regulated",
+          "headline": "<em>Heart of the European grid</em>, fully merchant-regulated.",
+          "thesis": "<p>Germany sits at the geographic and electrical centre of continental Europe, with cross-border capacity to nine neighbours totalling ~30 GW. Most lines are AC interconnections operated by TSOs, with growing HVDC investment (NordLink, ALEGrO, future NeuConnect to the UK). Revenue is regulated transmission, not merchant. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Cross-border capacity",
+              "~30 GW",
+              "large"
+            ],
+            [
+              "Neighbour states",
+              "9",
+              ""
+            ],
+            [
+              "HVDC links",
+              "NordLink, ALEGrO",
+              ""
+            ],
+            [
+              "Under construction",
+              "NeuConnect (UK)",
+              ""
+            ]
+          ]
+        },
+        "ldes": {
+          "name": "Long Duration",
+          "tabStat": "~7 GW · pumped hydro",
+          "headline": "<em>Legacy pumped hydro</em> meets hydrogen ambition.",
+          "thesis": "<p>Germany operates ~7 GW of pumped hydro storage, much of it in the south. The Hydrogen Importer Strategy effectively positions hydrogen as Germany's primary long-duration vector rather than electrochemical LDES — €18 bn deployed. New pumped hydro is politically contested; novel chemistries are at pilot stage. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Pumped hydro",
+              "~7 GW",
+              "large"
+            ],
+            [
+              "Hydrogen pipeline",
+              "10 GW electrolyser",
+              ""
+            ],
+            [
+              "H2 import strategy",
+              "€18 bn",
+              ""
+            ],
+            [
+              "LDES policy",
+              "Under design",
+              ""
+            ]
+          ]
+        }
+      },
+      "timeSeries": {
+        "capacityHistory": [
+          {
+            "year": 2022,
+            "solar": 67,
+            "onshore": 58,
+            "offshore": 8.1,
+            "bess": 4
+          },
+          {
+            "year": 2023,
+            "solar": 80,
+            "onshore": 60,
+            "offshore": 8.5,
+            "bess": 7
+          },
+          {
+            "year": 2024,
+            "solar": 89,
+            "onshore": 61,
+            "offshore": 9,
+            "bess": 9
+          },
+          {
+            "year": 2025,
+            "solar": 95,
+            "onshore": 63,
+            "offshore": 9.2,
+            "bess": 12
+          },
+          {
+            "year": 2026,
+            "solar": 102,
+            "onshore": 64,
+            "offshore": 9.4,
+            "bess": 16
+          }
+        ],
+        "target2030": {
+          "solar": [
+            215,
+            215
+          ],
+          "onshore": [
+            115,
+            115
+          ],
+          "offshore": [
+            30,
+            30
+          ],
+          "bess": [
+            80,
+            100
+          ]
+        },
+        "strikeHistory": [
+          {
+            "round": "2023",
+            "solar": 73,
+            "onshore": 73,
+            "offshore": 0
+          },
+          {
+            "round": "2024",
+            "solar": 71,
+            "onshore": 73,
+            "offshore": 0
+          },
+          {
+            "round": "2025",
+            "solar": 70,
+            "onshore": 74,
+            "offshore": null
+          },
+          {
+            "round": "2026",
+            "solar": 68,
+            "onshore": 74,
+            "offshore": 85
+          }
+        ]
+      }
+    },
+    "ES": {
+      "meta": {
+        "name": "Spain",
+        "iso": "ES",
+        "currency": "EUR",
+        "currencySymbol": "€",
+        "population": "48m",
+        "lastUpdated": "19 May 2026"
+      },
+      "macro": {
+        "sovereign": "S&P A · Baa1",
+        "policyRate": "3.25% (ECB)",
+        "ratingOutlook": "Positive"
+      },
+      "grid": "Spain runs the Iberian wholesale market (MIBEL) jointly with Portugal, with the EU's 'Iberian Exception' active until end-2024. REE/REN coordinate operation across both countries. The April 2025 blackout exposed grid fragility and has reset expectations on system-strength requirements for new renewables. [PLACEHOLDER DATA]",
+      "thesis": "Spain has the highest solar irradiation in mainland Europe but suffers the most severe price cannibalisation — 397 hours of negative prices in Q1 2026 alone. The PNIEC 2030 targets remain ambitious but commercial viability is the binding question. Hybrid configurations and direct corporate offtake to Iberian industrials are the dominant theses. [PLACEHOLDER DATA]",
+      "scorecard": [
+        {
+          "label": "Renewable share of generation",
+          "value": 58,
+          "unit": "%",
+          "meta": "Wind 23 · Solar 19 · Hydro 11",
+          "trend": "up"
+        },
+        {
+          "label": "2030 capacity gap",
+          "value": 90,
+          "unit": "GW",
+          "meta": "Aggressive trajectory",
+          "trend": "warn"
+        },
+        {
+          "label": "Solar irradiation (high)",
+          "value": 1750,
+          "unit": "kWh/kWp",
+          "meta": "Best in mainland EU",
+          "trend": "flat"
+        },
+        {
+          "label": "Day-ahead baseload (Q1'26)",
+          "value": 38,
+          "unit": "€/MWh",
+          "meta": "Lowest in Western EU",
+          "trend": "down"
+        },
+        {
+          "label": "Negative-price hours Q1 2026",
+          "value": 397,
+          "unit": "hrs",
+          "meta": "Up from 48 hrs Q1'25",
+          "trend": "warn"
+        }
+      ],
+      "pillars": {
+        "current": {
+          "title": "Current state",
+          "eyebrow": "Market fundamentals",
+          "accent": "blue",
+          "rows": [
+            [
+              "Total generation",
+              "~245 TWh"
+            ],
+            [
+              "Renewable share",
+              "58%"
+            ],
+            [
+              "Nuclear share",
+              "20%"
+            ],
+            [
+              "Gas share",
+              "18%"
+            ],
+            [
+              "Day-ahead baseload",
+              "€38/MWh"
+            ]
+          ]
+        },
+        "trajectory": {
+          "title": "Trajectory",
+          "eyebrow": "Growth & pipeline",
+          "accent": "green",
+          "rows": [
+            [
+              "2030 solar target",
+              "76 GW"
+            ],
+            [
+              "2030 wind target",
+              "62 GW"
+            ],
+            [
+              "2030 storage target",
+              "22 GW"
+            ],
+            [
+              "2030 electrolyser target",
+              "12 GW"
+            ]
+          ]
+        },
+        "strengths": {
+          "title": "Strengths",
+          "eyebrow": "Enablers & bankability",
+          "accent": "green",
+          "rows": [
+            [
+              "Solar irradiation",
+              "1,500–1,950 kWh"
+            ],
+            [
+              "Wind capacity factor",
+              "35–40%"
+            ],
+            [
+              "Corporate PPA depth",
+              "3.1 GW"
+            ],
+            [
+              "Iberian Peninsula price",
+              "Iberian Exception"
+            ]
+          ]
+        },
+        "issues": {
+          "title": "Current issues",
+          "eyebrow": "Risks & headwinds",
+          "accent": "red",
+          "rows": [
+            [
+              "Negative-price hours",
+              "397 hrs (8x YoY)"
+            ],
+            [
+              "Solar capture rate",
+              "54% (2025)"
+            ],
+            [
+              "Grid connection bottleneck",
+              "Severe"
+            ],
+            [
+              "Curtailment risk",
+              "Rising fast"
+            ]
+          ]
+        }
+      },
+      "technologies": {
+        "solar": {
+          "name": "Solar PV",
+          "tabStat": "38 GW · €32/MWh",
+          "headline": "<em>Best resource in Europe</em> — worst cannibalisation.",
+          "thesis": "<p>Spain leads Europe on solar irradiation and capture factor, but the resulting deployment scale has driven capture rates to 54% in 2025. <strong>397 hours of negative prices in Q1 2026 alone</strong> — up from 48 in Q1 2025 — has fundamentally changed the economics.</p><p>Corporate PPAs to Iberian industrials and hybrid solar+storage are the only realistic theses for new development. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Installed",
+              "38 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "76 GW",
+              ""
+            ],
+            [
+              "Capacity factor",
+              "20–25%",
+              ""
+            ],
+            [
+              "Latest auction clearing",
+              "€32/MWh",
+              ""
+            ]
+          ]
+        },
+        "onshore": {
+          "name": "Onshore Wind",
+          "tabStat": "32 GW · €43/MWh",
+          "headline": "<em>Capture rates hold up</em> versus solar.",
+          "thesis": "<p>Onshore wind preserves capture rates of ~80% versus solar's 54%, making it the more defensive merchant proposition. Galicia, Aragón and Castilla y León dominate. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Installed",
+              "32 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "62 GW",
+              ""
+            ],
+            [
+              "Capacity factor",
+              "28–35%",
+              ""
+            ],
+            [
+              "Latest auction clearing",
+              "€43/MWh",
+              ""
+            ]
+          ]
+        },
+        "offshore": {
+          "name": "Offshore Wind",
+          "tabStat": "Floating-led · pre-comm",
+          "headline": "<em>Floating, not fixed</em> — Atlantic potential.",
+          "thesis": "<p>Spain's coastal bathymetry makes floating the dominant offshore archetype. POEM zoning was approved in 2023 but commercial deployment remains pre-2030. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Operational",
+              "0 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "3 GW (floating)",
+              ""
+            ],
+            [
+              "First auction expected",
+              "2026",
+              ""
+            ],
+            [
+              "Lead zones",
+              "Galicia / Canaries",
+              ""
+            ]
+          ]
+        },
+        "bess": {
+          "name": "BESS",
+          "tabStat": "0.6 GW · early-stage",
+          "headline": "<em>Severely underbuilt</em> — biggest opportunity in EU.",
+          "thesis": "<p>Spain has the steepest BESS deployment ramp in Europe — from <1 GW today to 22 GW by 2030. The 'capacity mechanism' under development aims to provide bankable revenue. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Installed",
+              "0.6 GW",
+              "large"
+            ],
+            [
+              "2030 target",
+              "22 GW",
+              ""
+            ],
+            [
+              "Pipeline applications",
+              ">30 GW",
+              ""
+            ],
+            [
+              "Capacity mechanism",
+              "Under design",
+              ""
+            ]
+          ]
+        },
+        "interconnectors": {
+          "name": "Interconnectors",
+          "tabStat": "5.0 GW · low integration",
+          "headline": "<em>Iberian island</em> — France link the binding constraint.",
+          "thesis": "<p>Spain remains poorly interconnected with Europe — only ~2.8 GW to France (limited Pyrenees crossings), ~3.0 GW to Portugal, plus the Morocco link. The Biscay HVDC project (2.0 GW Spain–France) is under construction and will materially raise integration when commissioned in 2028. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Operational capacity",
+              "5.0 GW",
+              "large"
+            ],
+            [
+              "Spain-France",
+              "2.8 GW",
+              ""
+            ],
+            [
+              "Spain-Portugal",
+              "3.0 GW",
+              ""
+            ],
+            [
+              "Under construction",
+              "Biscay HVDC 2.0 GW",
+              ""
+            ]
+          ]
+        },
+        "ldes": {
+          "name": "Long Duration",
+          "tabStat": "~6 GW · pumped hydro",
+          "headline": "<em>Deep pumped-hydro estate</em>, modest new build.",
+          "thesis": "<p>Spain operates ~6 GW of pumped hydro — Cortes-La Muela (1.7 GW) the European flagship. The PNIEC 2030 plan targets storage at 22 GW but most is expected to be ≤4h BESS rather than true LDES. Repowering and new pumped hydro projects are slow to permit. [PLACEHOLDER]</p>",
+          "stats": [
+            [
+              "Pumped hydro operational",
+              "~6 GW",
+              "large"
+            ],
+            [
+              "Largest project",
+              "Cortes-La Muela 1.7 GW",
+              ""
+            ],
+            [
+              "2030 storage target",
+              "22 GW (mostly BESS)",
+              ""
+            ],
+            [
+              "LDES policy",
+              "Under design",
+              ""
+            ]
+          ]
+        }
+      },
+      "timeSeries": {
+        "capacityHistory": [
+          {
+            "year": 2022,
+            "solar": 19,
+            "onshore": 29,
+            "offshore": 0,
+            "bess": 0.1
+          },
+          {
+            "year": 2023,
+            "solar": 25,
+            "onshore": 30,
+            "offshore": 0,
+            "bess": 0.2
+          },
+          {
+            "year": 2024,
+            "solar": 32,
+            "onshore": 31,
+            "offshore": 0,
+            "bess": 0.4
+          },
+          {
+            "year": 2025,
+            "solar": 36,
+            "onshore": 32,
+            "offshore": 0,
+            "bess": 0.6
+          },
+          {
+            "year": 2026,
+            "solar": 38,
+            "onshore": 32,
+            "offshore": 0,
+            "bess": 0.6
+          }
+        ],
+        "target2030": {
+          "solar": [
+            76,
+            76
+          ],
+          "onshore": [
+            62,
+            62
+          ],
+          "offshore": [
+            3,
+            3
+          ],
+          "bess": [
+            22,
+            22
+          ]
+        },
+        "strikeHistory": [
+          {
+            "round": "2021",
+            "solar": 30,
+            "onshore": 28,
+            "offshore": null
+          },
+          {
+            "round": "2022",
+            "solar": 30,
+            "onshore": 31,
+            "offshore": null
+          },
+          {
+            "round": "2024",
+            "solar": 32,
+            "onshore": 43,
+            "offshore": null
+          },
+          {
+            "round": "2026",
+            "solar": 32,
+            "onshore": 43,
+            "offshore": null
+          }
+        ]
+      }
+    }
+  }
+}

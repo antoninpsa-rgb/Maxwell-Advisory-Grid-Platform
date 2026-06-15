@@ -1,0 +1,2228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy Market Analysis — Maxwell Advisory</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<style>
+  :root {
+    --paper: #ffffff;
+    --paper-soft: #faf8f2;
+    --paper-deep: #f2eee2;
+    --ink: #1a1715;
+    --ink-soft: #5a5450;
+    --ink-faint: #8a8580;
+    --rule: #d4ccb8;
+    --rule-soft: #e2dcc8;
+    --accent: #1d5754;
+    --positive: #2d6e3e;
+    --warning: #b75426;
+    --critical: #8a1c1c;
+    --info: #2a4d72;
+    --gold: #3ab446;
+    --accent-soft: #6fa39f;
+    --display: 'PP Neue Montreal Book', 'PP Neue Montreal', sans-serif;
+    --body: 'PP Neue Montreal Book', 'PP Neue Montreal', sans-serif;
+    --mono: 'PP Neue Montreal Book', 'PP Neue Montreal', sans-serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 14px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(26,23,21,0.008) 2px, rgba(26,23,21,0.008) 3px),
+      radial-gradient(ellipse at top, rgba(180,138,58,0.04) 0%, transparent 70%);
+  }
+  .masthead {
+    border-bottom: 1px solid var(--ink);
+    padding: 18px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--paper);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .brand { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+  }
+  .brand-mark img {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+  }
+  .brand-text { line-height: 1.2; }
+  .brand-name {
+    font-family: var(--display);
+    font-weight: 500; font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .brand-tag {
+    font-size: 9.5px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--ink-soft);
+    font-weight: 500; margin-top: 1px;
+  }
+  .controls { display: flex; gap: 36px; align-items: center; }
+  .control { display: flex; flex-direction: column; gap: 3px; min-width: 140px; }
+  .control label {
+    font-size: 9.5px; text-transform: uppercase;
+    letter-spacing: 0.18em; color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .control select {
+    background: transparent; border: none;
+    border-bottom: 1px solid var(--ink);
+    padding: 4px 22px 4px 0;
+    font-family: var(--body); font-weight: 500; font-size: 15px;
+    color: var(--ink); appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%231a1715' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 2px center;
+    width: 100%;
+  }
+  .status {
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--ink-soft); text-align: right; line-height: 1.45;
+  }
+  .hero {
+    padding: 56px 48px 48px;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 64px;
+    align-items: end;
+    position: relative;
+    background: radial-gradient(circle at right top, var(--paper-soft), var(--paper));
+  }
+  .hero::before {
+    content: ''; position: absolute;
+    top: 24px; right: 48px;
+    width: 80px; height: 1px; background: var(--accent);
+  }
+  .hero-label {
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--accent);
+    font-weight: 600; margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-weight: 400; font-size: 76px;
+    line-height: 0.92; letter-spacing: -0.035em;
+  }
+  .hero h1 .modifier {
+    font-style: italic; font-weight: 300;
+    color: var(--ink-soft); display: block;
+    font-size: 0.45em; margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+  .hero-thesis {
+    font-family: var(--display);
+    font-size: 18px; line-height: 1.5;
+    font-weight: 300; color: var(--ink);
+    max-width: 36em;
+  }
+  .hero-thesis::first-letter {
+    font-size: 2.2em; font-weight: 500;
+    float: left; line-height: 0.82;
+    margin: 8px 9px -2px 0; color: var(--accent);
+    font-style: italic;
+  }
+  .section {
+    padding: 56px 48px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-header {
+    display: flex; align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 36px; padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .section-title {
+    font-family: var(--display);
+    font-weight: 500; font-size: 30px;
+    letter-spacing: -0.015em;
+  }
+  .section-title em {
+    font-style: italic; font-weight: 400;
+    color: var(--ink-soft);
+  }
+  .section-number {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--ink-soft); letter-spacing: 0.1em;
+  }
+  .scorecard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .kpi {
+    background: var(--paper); padding: 22px 20px 20px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    min-height: 145px; position: relative;
+    transition: background 0.2s ease;
+  }
+  .kpi:hover { background: var(--paper-soft); }
+  .kpi-label {
+    font-size: 9.5px; text-transform: uppercase;
+    letter-spacing: 0.14em; color: var(--ink-soft);
+    font-weight: 600; margin-bottom: 10px;
+    line-height: 1.35; max-width: 20ch;
+  }
+  .kpi-value {
+    font-family: var(--display);
+    font-size: 40px; font-weight: 400;
+    line-height: 1; letter-spacing: -0.025em;
+  }
+  .kpi-value .unit {
+    font-size: 13px; font-family: var(--body);
+    font-weight: 500; color: var(--ink-soft);
+    margin-left: 3px; letter-spacing: 0;
+  }
+  .kpi-meta {
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--ink-soft); margin-top: 8px;
+    letter-spacing: -0.01em;
+  }
+  .kpi-trend {
+    display: inline-block; margin-left: 6px;
+    font-weight: 600;
+  }
+  .kpi-trend.up { color: var(--positive); }
+  .kpi-trend.down { color: var(--critical); }
+  .kpi-trend.warn { color: var(--warning); }
+  .kpi-trend.flat { color: var(--ink-soft); }
+  
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+  .pillar {
+    border-left: 2px solid var(--ink);
+    padding-left: 22px;
+    display: flex;
+    flex-direction: column;
+  }
+  .pillar.green { border-color: var(--positive); }
+  .pillar.amber { border-color: var(--warning); }
+  .pillar.red { border-color: var(--critical); }
+  .pillar.blue { border-color: var(--info); }
+  .pillar-eyebrow {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.16em; font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .pillar.green .pillar-eyebrow { color: var(--positive); }
+  .pillar.amber .pillar-eyebrow { color: var(--warning); }
+  .pillar.red .pillar-eyebrow { color: var(--critical); }
+  .pillar.blue .pillar-eyebrow { color: var(--info); }
+  .pillar-title {
+    font-family: var(--display);
+    font-size: 24px; font-weight: 500;
+    margin-bottom: 18px; letter-spacing: -0.01em;
+  }
+  .pillar-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; padding: 11px 0;
+    border-bottom: 1px dotted var(--rule);
+    font-size: 13.5px; gap: 16px;
+  }
+  .pillar-row:last-child { border-bottom: none; }
+  .ts-label-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pillar-row-label { color: var(--ink-soft); flex: 1; }
+  .pillar-row-value {
+    font-family: var(--mono); font-weight: 500;
+    color: var(--ink); white-space: nowrap;
+    font-size: 13px;
+    text-align: right;
+  }
+  
+  .tech-tabs {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px; background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 36px;
+  }
+  .grid-block {
+    border-left: 2px solid var(--accent);
+    padding: 4px 0 4px 24px;
+    max-width: 56em;
+  }
+  .grid-text {
+    font-family: var(--display);
+    font-size: 16.5px;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--ink);
+    white-space: pre-wrap;
+  }
+  .lf-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .lf-card {
+    background: var(--paper);
+    padding: 24px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+    position: relative;
+  }
+  .lf-card-name {
+    font-family: var(--display);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    margin-bottom: 10px;
+    line-height: 1.25;
+  }
+  .lf-card-value {
+    font-family: var(--display);
+    font-size: 46px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin: 6px 0 4px;
+  }
+  .lf-card-value .unit {
+    font-size: 14px;
+    font-family: var(--body);
+    font-weight: 500;
+    color: var(--ink-soft);
+    margin-left: 3px;
+    letter-spacing: 0;
+  }
+  .lf-bar {
+    height: 4px;
+    background: var(--rule-soft);
+    margin: 10px 0 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .lf-bar-fill {
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    background: var(--accent);
+  }
+  .lf-card.solar .lf-bar-fill { background: #b75426; }
+  .lf-card.onshore .lf-bar-fill { background: #1d5754; }
+  .lf-card.offshore .lf-bar-fill { background: #2a4d72; }
+  .lf-card.bess .lf-bar-fill { background: #b48a3a; }
+  .lf-card.interconnectors .lf-bar-fill { background: #6d4180; }
+  .lf-card.ldes .lf-bar-fill { background: #2d6e3e; }
+  .lf-card-meta {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+  }
+  .lf-card-meta strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .tech-tab {
+    background: var(--paper-soft);
+    padding: 22px 24px; cursor: pointer;
+    text-align: left; border: none;
+    font-family: var(--body); color: var(--ink);
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+  }
+  .tech-tab:hover { background: var(--paper-deep); }
+  .tech-tab.active {
+    background: var(--ink); color: var(--paper);
+  }
+  .tech-tab-name {
+    font-family: var(--display);
+    font-size: 22px; font-weight: 500;
+    display: block; margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .tech-tab-stat {
+    font-family: var(--mono); font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    opacity: 0.7;
+  }
+  
+  /* Upgraded Tech Detail Section */
+  .tech-detail {
+    display: block; 
+  }
+  .tech-content {
+    margin-bottom: 32px;
+  }
+  .tech-headline {
+    font-family: var(--display);
+    font-size: 32px; font-weight: 400;
+    line-height: 1.12; letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+  .tech-headline em {
+    font-style: italic; color: var(--accent);
+  }
+  .tech-thesis {
+    font-size: 14.5px; line-height: 1.65;
+    color: var(--ink); max-width: 48em;
+  }
+  .tech-thesis p { margin-bottom: 14px; }
+  .tech-thesis strong { font-weight: 600; }
+  
+  .tech-stats {
+    position: relative;
+    background: var(--paper-soft);
+    padding: 36px 40px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .tech-stats-content {
+    position: relative;
+    z-index: 2;
+  }
+  .tech-image {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    opacity: 0.12; 
+    z-index: 1;
+    pointer-events: none;
+    mix-blend-mode: multiply; 
+    transition: transform 1s ease;
+  }
+  .tech-stats:hover .tech-image { transform: scale(1.03); }
+
+  .tech-stat-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; padding: 12px 0;
+    border-bottom: 1px dotted rgba(26,23,21,0.2);
+  }
+  .tech-stat-row:last-child { border-bottom: none; }
+  .tech-stat-label {
+    font-size: 11.5px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .tech-stat-value {
+    font-family: var(--mono); font-size: 14px;
+    font-weight: 500;
+    text-align: right;
+  }
+  .tech-stat-value.large {
+    font-family: var(--display);
+    font-size: 22px; font-weight: 500;
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+  }
+  .chart-block {
+    border: 1px solid var(--rule);
+    padding: 28px; background: var(--paper);
+  }
+  .chart-title {
+    font-family: var(--display);
+    font-size: 18px; font-weight: 500;
+    margin-bottom: 4px; letter-spacing: -0.01em;
+  }
+  .chart-subtitle {
+    font-size: 11.5px; color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em; margin-bottom: 24px;
+    font-weight: 500;
+  }
+  .chart-wrap {
+    position: relative;
+    height: 260px;
+  }
+  .chart-caption {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .chart-caption strong { color: var(--ink); font-weight: 500; }
+
+  .investment-thesis {
+    background: var(--paper-soft);
+    color: var(--ink);
+    padding: 64px 48px;
+    border-bottom: 1px solid var(--ink);
+  }
+  .investment-thesis .section-header {
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .ladder { 
+    display: grid; gap: 24px; margin-top: 36px; 
+  }
+  .ladder-tier { 
+    background: var(--paper); 
+    border: 1px solid var(--rule); 
+    padding: 36px; 
+    border-radius: 6px; 
+    box-shadow: 0 4px 24px rgba(26,23,21,0.03);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .ladder-tier:hover {
+    box-shadow: 0 8px 36px rgba(26,23,21,0.06);
+    transform: translateY(-2px);
+  }
+  .ladder-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }
+  .ladder-label {
+    font-family: var(--display); font-size: 16px; font-weight: 600;
+    letter-spacing: 0.02em; text-transform: uppercase; color: var(--ink);
+    border-left: 3px solid var(--gold); padding-left: 14px;
+  }
+  .ladder-tier.core .ladder-label { border-color: var(--positive); }
+  .ladder-tier.valueadd .ladder-label { border-color: var(--gold); }
+  .ladder-tier.opportunistic .ladder-label { border-color: var(--warning); }
+  .ladder-risk { font-family: var(--mono); font-size: 11px; color: var(--ink-soft); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+  
+  /* Updated Playbook Boxes */
+  .ladder-plays { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .ladder-tier.valueadd .ladder-plays { grid-template-columns: repeat(3, 1fr); }
+  .play {
+    background: var(--paper-soft);
+    border: 1px solid var(--rule-soft);
+    border-left: 4px solid var(--gold);
+    padding: 24px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+  }
+  .ladder-tier.core .play { border-left-color: var(--positive); }
+  .ladder-tier.valueadd .play { border-left-color: var(--gold); }
+  .ladder-tier.opportunistic .play { border-left-color: var(--warning); }
+  
+  .play-title {
+    font-family: var(--display);
+    font-size: 18px; font-weight: 500;
+    margin-bottom: 12px; letter-spacing: -0.01em;
+    font-style: normal;
+    color: var(--ink);
+  }
+  .play-body {
+    font-size: 13.5px; line-height: 1.6;
+    color: var(--ink-soft); flex-grow: 1;
+  }
+  .evref {
+    display: block; margin-top: 16px; font-family: var(--mono);
+    font-size: 10px; letter-spacing: 0.04em; color: var(--accent);
+    text-transform: uppercase; font-weight: 600;
+  }
+
+  .colophon {
+    padding: 36px 48px 48px;
+    font-family: var(--mono); font-size: 10.5px;
+    color: var(--ink-soft); line-height: 1.7;
+    border-top: none;
+  }
+  .colophon h4 {
+    font-family: var(--display);
+    font-size: 14px; font-weight: 500;
+    color: var(--ink); margin-bottom: 8px;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+  .colophon-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 36px; margin-bottom: 24px;
+  }
+  .colophon-footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 16px; margin-top: 24px;
+    display: flex; justify-content: space-between;
+  }
+
+  /* =================================================================
+     LANDING VIEW — Europe map
+     ================================================================= */
+  body[data-view="landing"] #view-dashboard { display: none; }
+  body[data-view="dashboard"] #view-landing { display: none; }
+  body[data-view="landing"] .dashboard-only { display: none !important; }
+  body[data-view="dashboard"] .landing-only { display: none !important; }
+
+  .landing-hero {
+    padding: 56px 48px 28px;
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 64px;
+    align-items: end;
+    position: relative;
+  }
+  .landing-hero::before {
+    content: ''; position: absolute;
+    top: 24px; right: 48px;
+    width: 80px; height: 1px; background: var(--accent);
+  }
+  .landing-eyebrow {
+    font-size: 11px; text-transform: uppercase;
+    letter-spacing: 0.22em; color: var(--accent);
+    font-weight: 600; margin-bottom: 14px;
+  }
+  .landing-hero h1 {
+    font-family: var(--display);
+    font-weight: 400; font-size: 76px;
+    line-height: 0.92; letter-spacing: -0.035em;
+  }
+  .landing-hero h1 .modifier {
+    font-style: italic; font-weight: 300;
+    color: var(--ink-soft); display: block;
+    font-size: 0.5em; margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+  .landing-instructions {
+    font-family: var(--display);
+    font-size: 17px; line-height: 1.55;
+    font-weight: 300; color: var(--ink);
+    max-width: 32em;
+  }
+  .landing-instructions strong { font-weight: 500; color: var(--accent); }
+
+  .map-section {
+    padding: 24px 48px 56px;
+    position: relative;
+  }
+  .map-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .map-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: hidden;
+  }
+  .country {
+    fill: #ebe4d0;
+    stroke: var(--paper);
+    stroke-width: 0.6;
+    transition: fill 0.18s ease;
+  }
+  .country.inactive {
+    fill: #ebe4d0;
+    pointer-events: none;
+  }
+  .country.available {
+    fill: var(--accent);
+    cursor: pointer;
+  }
+  .country.available:hover {
+    fill: #3ab446;
+  }
+  .map-loading {
+    text-align: center;
+    padding: 64px 0;
+    color: var(--ink-soft);
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .map-legend {
+    display: flex;
+    gap: 28px;
+    margin: 28px 0 0;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-soft);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .map-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .map-legend-swatch {
+    width: 14px;
+    height: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .map-legend-swatch.available { background: var(--accent); }
+  .map-legend-swatch.coming { background: #ebe4d0; }
+
+  /* Tooltip floats over the map on country hover */
+  .map-tooltip {
+    position: fixed;
+    z-index: 1000;
+    pointer-events: none;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    box-shadow: 0 8px 24px rgba(26,23,21,0.10);
+    padding: 18px 20px 16px;
+    min-width: 260px;
+    max-width: 320px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.14s ease, transform 0.14s ease;
+  }
+  .map-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .map-tooltip-eyebrow {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .map-tooltip-name {
+    font-family: var(--display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin-bottom: 14px;
+    font-style: italic;
+  }
+  .map-tooltip-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 8px 0;
+    border-bottom: 1px dotted var(--rule);
+    gap: 12px;
+  }
+  .map-tooltip-stat:last-of-type { border-bottom: none; }
+  .map-tooltip-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-soft);
+    font-weight: 600;
+    flex: 1;
+  }
+  .map-tooltip-value {
+    font-family: var(--display);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+  .map-tooltip-value .unit {
+    font-size: 11px;
+    font-family: var(--body);
+    color: var(--ink-soft);
+    margin-left: 2px;
+    font-weight: 500;
+  }
+  .map-tooltip-cta {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    text-align: right;
+    font-weight: 600;
+  }
+
+  .back-to-map {
+    background: transparent;
+    border: 1px solid var(--ink);
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.15s, color 0.15s;
+    margin-left: 18px;
+  }
+  .back-to-map:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .back-to-map::before {
+    content: '← ';
+  }
+
+  @media (max-width: 1100px) {
+    .scorecard { grid-template-columns: repeat(3, 1fr); }
+    .hero { grid-template-columns: 1fr; gap: 32px; }
+    .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    .tech-detail { grid-template-columns: 1fr; }
+    .tech-tabs { grid-template-columns: repeat(3, 1fr); }
+    .lf-grid { grid-template-columns: repeat(3, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+    .ladder-plays, .ladder-tier.valueadd .ladder-plays { grid-template-columns: 1fr !important; }
+    .colophon-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 56px; }
+    .masthead { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .controls { width: 100%; flex-wrap: wrap; gap: 18px; }
+    .landing-hero { grid-template-columns: 1fr; gap: 28px; padding: 36px 24px 24px; }
+    .landing-hero h1 { font-size: 54px; }
+    .map-section { padding: 16px 24px 36px; }
+  }
+  @media (max-width: 720px) {
+    .scorecard { grid-template-columns: 1fr 1fr; }
+    .pillars-grid { grid-template-columns: 1fr; }
+    .tech-tabs { grid-template-columns: 1fr 1fr; }
+    .lf-grid { grid-template-columns: 1fr 1fr; }
+    .section { padding: 36px 24px; }
+    .hero { padding: 36px 24px; }
+    .masthead { padding: 16px 24px; }
+    .colophon { padding: 24px; }
+    .investment-thesis { padding: 36px 24px; }
+    .ladder-tier { padding: 24px; }
+  }
+
+  /* ──────────────────────────────────────────────────────────────────
+     Upgraded Help Boxes
+     ────────────────────────────────────────────────────────────────── */
+  .help-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15px; height: 15px;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--ink-faint);
+    font-family: var(--body);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1;
+    user-select: none;
+    cursor: default;
+    transition: all 0.2s ease;
+    flex: 0 0 auto;
+  }
+  .help-icon::after { content: '?'; }
+  .help-icon:hover { border-color: var(--accent); color: var(--accent); }
+
+  .help-wrap {
+    position: absolute;
+    top: 12px; right: 12px;
+    display: inline-block;
+    line-height: 0;
+  }
+  .help-tooltip {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: -4px;
+    width: 240px;
+    background: rgba(26,23,21,0.96);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--paper);
+    font-family: var(--body);
+    font-size: 11.5px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    padding: 14px 16px;
+    border-radius: 6px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.25);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease, visibility 0.15s ease, transform 0.15s ease;
+    transform: translateY(-4px);
+    pointer-events: none;
+    z-index: 100;
+    text-transform: none;
+    text-align: left;
+    white-space: normal;
+  }
+  .help-tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    right: 8px;
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 7px solid rgba(26,23,21,0.96);
+  }
+  .help-wrap:hover .help-tooltip { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  .help-wrap.inline {
+    position: static;
+  }
+  .help-wrap.inline .help-tooltip { right: auto; left: 100%; top: 50%; transform: translate(-4px, -50%); margin-left: 12px; }
+  .help-wrap.inline .help-tooltip::before { 
+    left: -7px; right: auto; top: 50%; transform: translateY(-50%); 
+    border-left: none; border-right: 7px solid rgba(26,23,21,0.96); 
+    border-top: 6px solid transparent; border-bottom: 6px solid transparent; 
+  }
+  .help-wrap.inline:hover .help-tooltip { transform: translate(0, -50%); }
+  
+  .tech-stat-row, .pillar-row { position: relative; }
+
+  /* ==================================================================
+     GRID CONNECTIONS MODULE
+     ================================================================== */
+  #connections-module { --paper-soft: #faf8f2; --paper-deep: #f2eee2; }
+
+  .lede { font-family: var(--display); font-size: 16.5px; line-height: 1.6; font-weight: 300; color: var(--ink); max-width: 58em; border-left: 2px solid var(--accent); padding-left: 24px; }
+  .lede strong { font-weight: 500; }
+  .subhead { font-family: var(--display); font-size: 22px; font-weight: 500; letter-spacing: -0.015em; margin: 46px 0 24px; }
+  .subhead em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+  .note { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-top: 18px; letter-spacing: -0.005em; }
+  .src { color: var(--accent); }
+
+  .flow { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; border: 1px solid var(--rule); background: var(--rule); }
+  .flow-step { background: var(--paper); padding: 22px 18px 20px; position: relative; }
+  .flow-step:not(:last-child)::after {
+    content: '→'; position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+    z-index: 5; font-size: 16px; color: var(--ink-soft); background: var(--paper);
+    width: 20px; height: 20px; display: grid; place-items: center;
+  }
+  .flow-num { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); letter-spacing: 0.12em; margin-bottom: 8px; }
+  .flow-name { font-family: var(--display); font-size: 16px; font-weight: 500; line-height: 1.15; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .flow-step.g1 { border-top: 3px solid var(--ink-faint); }
+  .flow-step.g2 { border-top: 3px solid var(--accent); }
+  .flow-step.live { border-top: 3px solid var(--positive); }
+  .flow-desc { font-size: 11.5px; line-height: 1.45; color: var(--ink-soft); }
+
+  .bc-axisrow, .bc-row { display: grid; grid-template-columns: 168px 1fr 96px; gap: 16px; align-items: center; }
+  .bc-axis { position: relative; height: 16px; border-bottom: 1px solid var(--rule); }
+  .bc-axis span { position: absolute; transform: translateX(-50%); font-family: var(--mono); font-size: 10px; color: var(--ink-faint); top: 1px; }
+  /* Properly align 160 GW to flush right end of the track to prevent overflow */
+  .bc-axis span:last-child { left: 100%; transform: translateX(-100%); }
+  .bc-row { padding: 6px 0; }
+  .bc-label { font-family: var(--display); font-size: 14px; font-weight: 500; letter-spacing: -0.01em; text-align: right; line-height: 1.15; }
+  .bc-label small { display: block; font-family: var(--mono); font-size: 9px; color: var(--ink-faint); font-weight: 400; letter-spacing: 0.02em; text-transform: uppercase; margin-top: 2px; }
+  .bc-track {
+    position: relative; height: 20px; display: flex;
+    background:
+      linear-gradient(90deg, rgba(26,23,21,0.07) 0 1px, transparent 1px) 0 0 / 25% 100% repeat-x,
+      var(--rule-soft);
+  }
+  .bc-fill { height: 100%; }
+  .bc-fill.p1 { background: var(--accent); }
+  .bc-fill.p2 { background: var(--accent-soft); }
+  .bc-dot { position: absolute; top: 50%; width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 2.5px solid var(--warning); transform: translate(-50%, -50%); z-index: 3; }
+  .bc-val { font-family: var(--mono); font-size: 11.5px; color: var(--ink); white-space: nowrap; }
+  .bc-val b { font-weight: 600; }
+  .bc-val em { color: var(--warning); font-style: normal; }
+  .bc-demand .bc-track { background: linear-gradient(90deg, rgba(26,23,21,0.07) 0 1px, transparent 1px) 0 0 / 25% 100% repeat-x, #ece8db; }
+  .bc-demand .bc-fill.p1 { background: var(--info); }
+  .bc-demand .bc-fill.p2 { background: #6f8aab; }
+  .bc-demand .bc-label { color: var(--info); }
+  .bc-legend { display: flex; gap: 24px; margin-top: 22px; font-family: var(--mono); font-size: 10.5px; color: var(--ink-soft); letter-spacing: 0.06em; text-transform: uppercase; flex-wrap: wrap; }
+  .bc-legend span { display: flex; align-items: center; gap: 7px; }
+  .bc-legend i { width: 13px; height: 13px; display: inline-block; }
+  .bc-legend i.dot { border-radius: 50%; background: var(--paper); border: 2.5px solid var(--warning); width: 12px; height: 12px; }
+
+  .timeline { border-left: 2px solid var(--rule); margin-left: 6px; }
+  .tl-item { position: relative; padding: 0 0 30px 32px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before { 
+    content: ''; position: absolute; 
+    left: -10px; top: 3px; 
+    width: 14px; height: 14px; border-radius: 50%; 
+    background: var(--paper); border: 2px solid var(--accent); 
+  }
+  .tl-item.protected::before { border-color: var(--warning); }
+  .tl-item.phase2::before { border-color: var(--ink-faint); }
+  .tl-wave { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 4px; }
+  .tl-item.protected .tl-wave { color: var(--warning); }
+  .tl-item.phase2 .tl-wave { color: var(--ink-soft); }
+  .tl-title { font-family: var(--display); font-size: 18px; font-weight: 500; letter-spacing: -0.01em; }
+  .tl-title span { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+  .tl-sub { font-size: 13px; color: var(--ink-soft); margin: 6px 0 10px; max-width: 52em; }
+  .tl-windows { display: flex; gap: 32px; flex-wrap: wrap; }
+  .tl-win { font-size: 12.5px; }
+  .tl-win b { font-family: var(--mono); font-size: 11px; color: var(--ink); font-weight: 600; display: block; }
+  .tl-win span { color: var(--ink-soft); font-size: 11px; }
+
+  @media (max-width: 1100px) {
+    .flow { grid-template-columns: 1fr 1fr; }
+    .flow-step:not(:last-child)::after { content: '↓'; right: 50%; top: auto; bottom: -10px; transform: translateX(50%); }
+    .bc-axisrow, .bc-row { grid-template-columns: 112px 1fr 80px; gap: 10px; }
+    .bc-label { font-size: 12px; }
+  }
+  @media (max-width: 720px) {
+    .flow { grid-template-columns: 1fr; }
+  }
+
+  /* ==================================================================
+     ADDED COMPONENTS
+     ================================================================== */
+  .section-hint {
+    font-size: 12.5px; color: var(--ink-soft); margin: -10px 0 22px;
+    max-width: 56em;
+  }
+  .hint-q {
+    display: inline-grid; place-items: center; width: 15px; height: 15px;
+    border: 1px solid var(--rule); border-radius: 50%; font-size: 10px; font-weight: 600;
+    color: var(--ink-faint); vertical-align: middle;
+  }
+
+  .primer-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    background: var(--rule); border: 1px solid var(--rule);
+    margin-top: 36px;
+  }
+  .primer-tile { background: var(--paper); padding: 26px 24px 28px; }
+  .primer-num {
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+    letter-spacing: 0.12em; margin-bottom: 10px; font-weight: 600;
+  }
+  .primer-title {
+    font-family: var(--display); font-size: 19px; font-weight: 500;
+    letter-spacing: -0.01em; margin-bottom: 12px;
+  }
+  .primer-body { font-size: 13.5px; line-height: 1.65; color: var(--ink-soft); }
+
+  .term {
+    position: relative;
+    border-bottom: 1px dotted var(--accent);
+    cursor: help;
+    color: inherit;
+  }
+  .term-tip {
+    left: 0; right: auto;
+    top: calc(100% + 10px);
+    transform: translateY(4px);
+    width: 250px;
+  }
+  .term-tip::before { left: 10px; right: auto; }
+  .term:hover .term-tip { opacity: 1; visibility: visible; transform: translateY(0); }
+
+  .help-tooltip.rich { width: 260px; padding: 14px 16px; }
+  .help-tooltip.rich .ht-def,
+  .help-tooltip.rich .ht-sowhat,
+  .help-tooltip.rich .ht-src { display: block; }
+  .help-tooltip.rich .ht-sowhat {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    color: #f0ece2;
+  }
+  .help-tooltip.rich .ht-sowhat b { color: var(--gold); font-weight: 600; }
+  .help-tooltip.rich .ht-src {
+    margin-top: 10px; font-family: var(--mono); font-size: 9.5px;
+    letter-spacing: 0.02em; color: rgba(255,255,255,0.5); text-transform: uppercase;
+  }
+
+  .placeholder-banner {
+    background: #fbe7e2; border-bottom: 2px solid var(--warning);
+    color: #6b2d14; padding: 14px 48px; font-size: 13px; line-height: 1.5;
+    display: flex; gap: 14px; align-items: baseline;
+  }
+  .pb-tag {
+    flex: 0 0 auto; font-family: var(--mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+    background: var(--warning); color: #fff; padding: 3px 9px;
+  }
+
+  .asof-badge { display: flex; align-items: center; justify-content: flex-end; gap: 6px; font-weight: 500; }
+  .asof-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-faint); }
+  .asof-sub { font-size: 9.5px; color: var(--ink-faint); margin-top: 2px; }
+
+  /* Upgraded Constraint Map Overlay Architecture */
+  .constraint-map-layout {
+    display: grid; grid-template-columns: 320px 1fr; gap: 48px; align-items: start;
+  }
+  .constraint-sidebar {
+    padding-top: 0;
+  }
+  .cm-main-desc {
+    font-family: var(--display);
+    font-size: 16px;
+    line-height: 1.6;
+    font-weight: 300;
+    color: var(--ink);
+  }
+  .cm-main-desc strong { font-weight: 500; }
+  
+  .constraint-map-wrap {
+    position: relative; background: var(--paper-soft);
+    border: 1px solid var(--rule); border-radius: 4px; min-height: 560px;
+    display: grid; place-items: center; padding: 0; overflow: hidden;
+  }
+  #constraint-map { width: 100%; height: auto; max-height: 560px; }
+  
+  .map-overlay {
+    position: absolute;
+    width: 240px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 16px 20px;
+    border-radius: 6px;
+    border: 1px solid rgba(26,23,21,0.1);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+    pointer-events: none;
+  }
+  .north-overlay { top: 24px; left: 24px; }
+  .boundary-overlay { top: 50%; left: 24px; transform: translateY(-50%); }
+  .south-overlay { bottom: 24px; left: 24px; }
+  
+  .cm-heading {
+    font-family: var(--display);
+    font-size: 15px; font-weight: 600;
+    margin-bottom: 6px; letter-spacing: -0.01em; text-transform: uppercase;
+  }
+  .cm-desc {
+    font-size: 12.5px; line-height: 1.5; color: var(--ink-soft);
+  }
+  .cm-desc strong { color: var(--ink); font-weight: 600; }
+  
+  .cm-north { fill: rgba(183,84,38,0.16); }
+  .cm-south { fill: rgba(42,77,114,0.14); }
+  .cm-outline { fill: none; stroke: var(--ink-soft); stroke-width: 1; }
+  .cm-boundary { stroke: var(--warning); stroke-width: 1.6; stroke-dasharray: 5 4; }
+  .cm-gen { fill: var(--warning); stroke: var(--paper); stroke-width: 1.5; }
+  .cm-dem { fill: var(--info); stroke: var(--paper); stroke-width: 1.5; }
+  
+  .constraint-legend { font-size: 13px; }
+  .cl-item { display: flex; gap: 12px; margin-bottom: 16px; line-height: 1.5; color: var(--ink-soft); }
+  .cl-item strong { color: var(--ink); font-weight: 500; }
+  .cl-swatch { flex: 0 0 auto; width: 16px; height: 16px; margin-top: 2px; border-radius: 2px; }
+  .cl-swatch.north { background: rgba(183,84,38,0.5); }
+  .cl-swatch.south { background: rgba(42,77,114,0.45); }
+  .cl-swatch.boundary { background: transparent; border-top: 3px dashed var(--warning); height: 0; margin-top: 8px; border-radius: 0; }
+
+  @media (max-width: 1100px) {
+    .primer-grid { grid-template-columns: 1fr; }
+    .constraint-map-layout { grid-template-columns: 1fr; gap: 36px; }
+    .map-overlay { width: 200px; padding: 12px 16px; }
+  }
+  @media (max-width: 720px) {
+    .map-overlay { position: static; width: 100%; transform: none; margin-bottom: 16px; border: none; background: transparent; box-shadow: none; padding: 0 24px; }
+    .boundary-overlay { top: auto; transform: none; }
+  }
+</style>
+</head>
+<body data-view="landing">
+
+<header class="masthead">
+  <div class="brand">
+    <div class="brand-mark"><img src="Maxwell logo.png" alt="Maxwell Advisory logo" onerror="this.style.display='none'"></div>
+    <div class="brand-text">
+      <div class="brand-name">Maxwell Advisory</div>
+      <div class="brand-tag">Energy Market Intelligence Platform</div>
+    </div>
+    <a href="#/" class="back-to-map dashboard-only">Europe map</a>
+  </div>
+  <div class="controls dashboard-only">
+    <div class="control">
+      <label>Market</label>
+      <select id="country-select">
+        <option value="GB">United Kingdom</option>
+        <option value="DE">Germany (illustrative)</option>
+        <option value="ES">Spain (illustrative)</option>
+      </select>
+    </div>
+    <div class="status">
+      <div class="asof-badge"><span class="asof-dot"></span><span id="asof-label">As of 19 May 2026</span></div>
+      <div class="asof-sub">Dated snapshot &middot; not a live feed</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============================================================ -->
+<!-- LANDING VIEW — Europe map                                    -->
+<!-- ============================================================ -->
+<div id="view-landing">
+  <section class="landing-hero">
+    <div>
+      <div class="landing-eyebrow">Energy Market Intelligence &mdash; 2026</div>
+      <h1>
+        <span class="modifier">Select a market</span>
+        Europe
+      </h1>
+    </div>
+    <div class="landing-instructions">
+      Hover any <strong>highlighted country</strong> for a snapshot of renewable share, curtailment and policy rate. Click to open the full country briefing. Other markets are visible for context but data is not yet published.
+    </div>
+  </section>
+
+  <section class="map-section">
+    <div class="map-wrapper">
+      <div id="map-loading" class="map-loading">Loading map&hellip;</div>
+      <svg id="europe-map" class="map-svg" viewBox="0 0 1000 720" preserveAspectRatio="xMidYMid meet" overflow="hidden" style="display:none"></svg>
+      <div class="map-legend">
+        <div class="map-legend-item"><span class="map-legend-swatch available"></span> Live data</div>
+        <div class="map-legend-item"><span class="map-legend-swatch coming"></span> Coming soon</div>
+      </div>
+    </div>
+  </section>
+  <div id="map-tooltip" class="map-tooltip" role="tooltip"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DASHBOARD VIEW — existing country briefing                   -->
+<!-- ============================================================ -->
+<div id="view-dashboard">
+
+<!-- PLACEHOLDER BANNER -->
+<div id="placeholder-banner" class="placeholder-banner" role="alert" style="display:none">
+  <span class="pb-tag">Illustrative placeholder</span>
+  <span>The figures for this market are <strong>fabricated</strong> to demonstrate the multi-country layout. They are <strong>not verified</strong> and must not be used for analysis or external distribution. Only the United Kingdom carries researched data.</span>
+</div>
+
+<section class="hero">
+  <div>
+    <div class="hero-label">Country Briefing &mdash; <span id="hero-iso">GB</span></div>
+    <h1>
+      <span class="modifier">Investor briefing on</span>
+      <span id="hero-country">United Kingdom</span>
+    </h1>
+  </div>
+  <div class="hero-thesis" id="hero-thesis">
+    Loading thesis...
+  </div>
+</section>
+
+
+<!-- I. MARKET STRUCTURE -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">The grid <em>&amp; market structure</em></div>
+    <div class="section-number">I. MARKET STRUCTURE</div>
+  </div>
+  <div class="grid-block">
+    <p class="grid-text" id="grid"></p>
+  </div>
+  
+  <div class="primer-grid">
+    <div class="primer-tile">
+      <div class="primer-num">01</div>
+      <div class="primer-title">How GB power is sold</div>
+      <div class="primer-body">Britain runs <span class="term">a single national wholesale market<span class="help-tooltip term-tip">BETTA — British Electricity Trading and Transmission Arrangements: all GB power trades in one market, not regional zones.</span></span>, priced in half-hourly slots. <span class="term">NESO<span class="help-tooltip term-tip">National Energy System Operator — runs the grid in real time and designs the connection queue.</span></span> operates the system minute to minute; <span class="term">Ofgem<span class="help-tooltip term-tip">Office of Gas and Electricity Markets — Britain's independent energy regulator.</span></span> regulates it. There are no regional price zones &mdash; one national price, set increasingly by wind.</div>
+    </div>
+    <div class="primer-tile">
+      <div class="primer-num">02</div>
+      <div class="primer-title">How asset owners' revenues are structured</div>
+      <div class="primer-body">Three routes:</div>
+      <div class="primer-body"> — A <span class="term">CfD<span class="help-tooltip term-tip">Contract for Difference — a 15-year, inflation-linked contract that fixes a generator's price and removes market risk.</span></span> A fixed price for 15 years (lowest risk).</div>
+      <div class="primer-body"> — <span class="term">Merchant<span class="help-tooltip term-tip">Selling at the open wholesale price with no fixed-price contract — higher risk, higher potential reward.</span></span> The open market price (highest risk).</div>
+      <div class="primer-body"> — <span class="term">Cap &amp; Floor<span class="help-tooltip term-tip">An Ofgem scheme for interconnectors and long-duration storage.</span></span> A regulated floor with capped upside (utility-like).</div>
+    </div>
+    <div class="primer-tile">
+      <div class="primer-num">03</div>
+      <div class="primer-title">Why connections are the bottleneck</div>
+      <div class="primer-body">Most cheap generation is stuck in Scotland; most demand is in the South; the wires between can't carry it all. The result is <span class="term">constraint<span class="help-tooltip term-tip">When the wires can't carry all the power generated, the grid pays generators (mostly Scottish wind) to switch off — at a cost of ~£2.4bn a year.</span></span> &mdash; and a years-long queue for a firm grid connection. Who holds a connection, and where, is the whole game.</div>
+    </div>
+  </div>
+</section>
+
+<!-- II. SUMMARY METRICS -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Headline scorecard <em>at a glance</em></div>
+    <div class="section-number">II. SUMMARY METRICS</div>
+  </div>
+  <p class="section-hint">Hover the <span class="hint-q">?</span> on any metric for a plain-English definition, why it matters to an investor, and its source.</p>
+  <div class="scorecard" id="scorecard"></div>
+</section>
+
+<!-- III. DIAGNOSTIC -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">The four-pillar diagnostic</div>
+    <div class="section-number">III. CURRENT STATE / TRAJECTORY / STRENGTHS / ISSUES</div>
+  </div>
+  <div class="pillars-grid" id="pillars"></div>
+</section>
+
+<!-- IV. THE TECHNOLOGIES -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Technology deep dive</div>
+    <div class="section-number">IV. THE TECHNOLOGIES</div>
+  </div>
+  <p class="section-hint">What each asset class actually is, and how it makes money. Understand the hardware before the queue position.</p>
+  <div class="tech-tabs" id="tech-tabs"></div>
+  <div class="tech-detail" id="tech-detail"></div>
+</section>
+
+<!-- V. ASSET UTILISATION -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Load factors <em>by technology</em></div>
+    <div class="section-number">V. ASSET UTILISATION</div>
+  </div>
+  <div class="lf-grid" id="load-factors"></div>
+</section>
+
+<!-- VI. TIME SERIES -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-title">Capacity trajectory <em>&amp; auction history</em></div>
+    <div class="section-number">VI. TIME SERIES</div>
+  </div>
+  <div class="charts-grid">
+    <div class="chart-block">
+      <div class="chart-title">Installed capacity by technology</div>
+      <div class="chart-subtitle">GW / Historical &rarr; 2030 target band</div>
+      <div class="chart-wrap"><canvas id="capacity-chart"></canvas></div>
+      <div class="chart-caption"><strong>Investor Takeaway:</strong> The capacity trajectory illustrates the sheer scale of the 2030 build-out required, showing where scarcity and opportunity lie for incoming capital and grid reform integration.</div>
+    </div>
+    <div class="chart-block">
+      <div class="chart-title">Auction-clearing prices</div>
+      <div class="chart-subtitle"><span id="auction-currency">£</span>/MWh / Latest auction round</div>
+      <div class="chart-wrap"><canvas id="strike-chart"></canvas></div>
+      <div class="chart-caption"><strong>Investor Takeaway:</strong> Contract clearing prices signal a return to sustainable economics for offshore wind and solar, creating a highly bankable floor for new capacity entering the pipeline.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<!-- VII. THE GRID BOTTLENECK -->
+<!-- ============================================================ -->
+<div id="connections-module">
+
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">The grid bottleneck <em>&mdash; the primary barrier</em></div>
+      <div class="section-number">VII. GRID CONNECTIONS</div>
+    </div>
+    <p class="lede">Everything in the technology section above runs into the same wall: a project cannot earn a penny until it is connected, and the queue for a firm connection is the binding constraint on the entire 2030 build-out. This section explains where the bottleneck is, how the reformed queue works, where capacity is scarce, and when certainty arrives.</p>
+  </section>
+
+  <!-- ===== VII-A: Geographic constraint map ===== -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">Where the bottleneck is <em>&mdash; the geography</em></div>
+      <div class="section-number">VII-A. THE CONSTRAINT MAP</div>
+    </div>
+    
+    <div class="constraint-map-layout">
+      <div class="constraint-sidebar">
+        <p class="cm-main-desc">The UK grid is, at heart, a geography problem. Cheap wind generation sits in the north (Scotland); demand sits in the south (London, the Midlands, data centres). The transmission boundary between them &mdash; the <strong>B6 boundary</strong> &mdash; cannot carry the surplus, so northern wind is paid to switch off.</p>
+        
+        <div class="constraint-legend" style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule)">
+          <div class="cl-item"><span class="cl-swatch north"></span><div><strong>Surplus generation zones</strong></div></div>
+          <div class="cl-item"><span class="cl-swatch south"></span><div><strong>Demand concentration</strong></div></div>
+          <div class="cl-item"><span class="cl-swatch boundary"></span><div><strong>Primary transmission bottleneck</strong></div></div>
+          <p class="note" style="margin-top:24px;">Schematic map. GB outline from world-atlas (Natural Earth, public domain); boundary shown indicatively at ~55&deg;N. Source: <span class="src">NESO constraint &amp; curtailment data, 2025</span>.</p>
+        </div>
+      </div>
+      
+      <div class="constraint-map-wrap">
+        <div id="constraint-loading" class="map-loading">Loading map&hellip;</div>
+        <svg id="constraint-map" viewBox="0 0 460 560" preserveAspectRatio="xMidYMid meet" style="display:none"></svg>
+
+        <div class="map-overlay north-overlay">
+          <div class="cm-heading" style="color: var(--warning)">North of B6</div>
+          <div class="cm-desc"><strong>Scotland — surplus wind</strong><br>Abundant wind, thin demand. Curtailed and constraint-paid; Gate 2 offers issue here <em>first</em>. <strong>98% of 2025 curtailment</strong> occurred here.</div>
+        </div>
+
+        <div class="map-overlay boundary-overlay">
+          <div class="cm-heading" style="color: var(--ink)">The B6 Boundary</div>
+          <div class="cm-desc">The constrained transmission corridor the ASTI build-out is racing to reinforce post-2028.</div>
+        </div>
+
+        <div class="map-overlay south-overlay">
+          <div class="cm-heading" style="color: var(--info)">South of B6</div>
+          <div class="cm-desc"><strong>Demand &amp; data centres</strong><br>Load and data centres concentrate heavily here. Power must be imported across the boundary.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<!-- ===== VII-B: Gated pathway ===== -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">The gated pathway <em>to the network</em></div>
+      <div class="section-number">VII-B. THE GATED PATHWAY</div>
+    </div>
+  <p class="lede" style="margin-bottom:36px;">
+    TMO4+ is a <strong>two-gate</strong> process. A project first earns a <strong>Gate 1</strong> indicative offer, then must satisfy <strong>both</strong> a Readiness test and a Strategic Alignment test to reach <strong>Gate 2</strong> — a firm offer carrying a confirmed date, connection point and queue position. Gate 2 projects are then split into <strong>Phase 1</strong> (2030 delivery) and <strong>Phase 2</strong> (2035). This module covers transmission and large embedded connections only.
+  </p>
+
+  <div class="flow">
+    <div class="flow-step">
+      <div class="flow-num">STEP 01</div>
+      <div class="flow-name">Application</div>
+      <div class="flow-desc">Project applies in a connections window. ~3,000 applications were assessed in the queue-reordering exercise (G2tWQ).</div>
+    </div>
+    <div class="flow-step g1">
+      <div class="flow-num">STEP 02</div>
+      <div class="flow-name">Gate 1</div>
+      <div class="flow-desc">Indicative offer + queue position based on a coordinated network design. No confirmed connection date.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">STEP 03</div>
+      <div class="flow-name">Gate 2 criteria</div>
+      <div class="flow-desc">Must pass <strong>both</strong>: Readiness (land + planning) and Strategic Alignment (needed for the plan).</div>
+    </div>
+    <div class="flow-step g2">
+      <div class="flow-num">STEP 04</div>
+      <div class="flow-name">Gate 2 offer</div>
+      <div class="flow-desc">Firm offer: confirmed <strong>date</strong>, <strong>connection point</strong> and <strong>queue position</strong>. The bankability event.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-num">STEP 05</div>
+      <div class="flow-name">Milestones</div>
+      <div class="flow-desc">Queue Management Milestones. M1 = initiate statutory consents &amp; submit planning. Miss them and you can be removed.</div>
+    </div>
+    <div class="flow-step live">
+      <div class="flow-num">STEP 06</div>
+      <div class="flow-name">Energise</div>
+      <div class="flow-desc">Build and connect. Phase 1 targets 2030 delivery; Phase 2 targets 2035.</div>
+    </div>
+  </div>
+  </section>
+
+<!-- ===== VII-C: Pipeline by technology ===== -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">Pipeline by technology <em>— where the scarcity is</em></div>
+      <div class="section-number">VII-C. THE CAPACITY SIGNAL</div>
+    </div>
+  <p class="lede" style="margin-bottom:36px;">
+    The clearest investment signal in the reform. Each <strong>bar</strong> is the prioritised Gate 2 pipeline (Phase 1 + Phase 2); the <strong>dot</strong> marks the Gate 1 overhang — capacity that applied but was not prioritised. Where the dot sits far beyond the bar, connection capacity is abundant and confers little advantage (battery). Where the dot is tiny, a Gate 2 position is scarce and valuable (offshore wind, interconnectors).
+  </p>
+
+  <div class="bc-axisrow">
+    <div></div>
+    <div class="bc-axis"><span style="left:0%">0</span><span style="left:25%">40</span><span style="left:50%">80</span><span style="left:75%">120</span><span>160 GW</span></div>
+    <div></div>
+  </div>
+
+  <div class="bc-row">
+    <div class="bc-label">Offshore wind</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:20.1%"></div><div class="bc-fill p2" style="width:23.6%"></div><div class="bc-dot" style="left:2.8%"></div></div>
+    <div class="bc-val"><b>70</b> &middot; <em>4.5</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Battery (BESS)</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:21.6%"></div><div class="bc-fill p2" style="width:30.4%"></div><div class="bc-dot" style="left:95.6%"></div></div>
+    <div class="bc-val"><b>83</b> &middot; <em>153</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Solar</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:18.7%"></div><div class="bc-fill p2" style="width:18.2%"></div><div class="bc-dot" style="left:22.4%"></div></div>
+    <div class="bc-val"><b>59</b> &middot; <em>36</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Onshore wind</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:8.2%"></div><div class="bc-fill p2" style="width:3.0%"></div><div class="bc-dot" style="left:8.4%"></div></div>
+    <div class="bc-val"><b>18</b> &middot; <em>13</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Interconnector</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:2.3%"></div><div class="bc-fill p2" style="width:6.1%"></div><div class="bc-dot" style="left:0.8%"></div></div>
+    <div class="bc-val"><b>13</b> &middot; <em>1.2</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">LDES</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:2.9%"></div><div class="bc-fill p2" style="width:2.8%"></div><div class="bc-dot" style="left:2.9%"></div></div>
+    <div class="bc-val"><b>9.1</b> &middot; <em>4.6</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Low-carbon dispatchable</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:2.1%"></div><div class="bc-fill p2" style="width:6.1%"></div></div>
+    <div class="bc-val"><b>13</b> &middot; <em>0</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Nuclear</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:2.1%"></div><div class="bc-fill p2" style="width:2.1%"></div></div>
+    <div class="bc-val"><b>6.6</b> &middot; <em>0</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Unabated gas</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:2.6%"></div><div class="bc-fill p2" style="width:1.1%"></div><div class="bc-dot" style="left:2.4%"></div></div>
+    <div class="bc-val"><b>6.0</b> &middot; <em>3.8</em></div>
+  </div>
+  <div class="bc-row">
+    <div class="bc-label">Tidal / other / non-GB</div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:1.9%"></div><div class="bc-fill p2" style="width:1.2%"></div></div>
+    <div class="bc-val"><b>4.9</b> &middot; <em>0</em></div>
+  </div>
+
+  <div class="bc-row bc-demand" style="margin-top:14px; border-top:1px solid var(--rule); padding-top:16px;">
+    <div class="bc-label">Transmission demand<small>data centres / industrial</small></div>
+    <div class="bc-track"><div class="bc-fill p1" style="width:7.4%"></div><div class="bc-fill p2" style="width:54.2%"></div></div>
+    <div class="bc-val"><b>99</b> &middot; <em>0</em></div>
+  </div>
+
+  <div class="bc-legend">
+    <span><i style="background:var(--accent)"></i> Phase 1 — 2030</span>
+    <span><i style="background:var(--accent-soft)"></i> Phase 2 — 2035</span>
+    <span><i class="dot"></i> Gate 1 overhang (not prioritised)</span>
+    <span style="color:var(--info)"><i style="background:var(--info)"></i> Transmission demand</span>
+  </div>
+
+  <div class="note">
+    All figures GW. Bar value = Gate 2 total (Phase 1 + Phase 2); dot value = Gate 1 not-prioritised capacity. Generation &amp; storage pipeline totals ~132 GW (Phase 1) and ~151 GW (Phase 2) = 283 GW; transmission-connected demand adds ~99 GW. Source: <span class="src">NESO press release (8 Dec 2025), delivery pipeline by technology</span>. "Tidal / other / non-GB" aggregates three small rows.
+  </div>
+  </section>
+
+<!-- ===== VII-D: Offer windows ===== -->
+  <section class="section">
+    <div class="section-header">
+      <div class="section-title">When certainty arrives <em>— the offer windows</em></div>
+      <div class="section-number">VII-D. GATE 2 OFFER TIMELINE</div>
+    </div>
+  <p class="lede" style="margin-bottom:36px;">
+    Gate 2 offers arrive in three waves through 2026 and into early 2027, sequenced by region and engineering complexity — <strong>Scotland issues first</strong>. Each wave is the moment a cohort of projects becomes bankable. Within each wave, transmission and large embedded connections lead; distribution follows.
+  </p>
+  <div class="timeline">
+    <div class="tl-item protected">
+      <div class="tl-wave">Wave 1 &middot; Feb – May 2026</div>
+      <div class="tl-title">Protected projects <span>— already contracted, near-term</span></div>
+      <div class="tl-sub">Projects with Clause 1 / 2a protection, contracted to connect by end 2026 or end 2027. These keep their existing dates.</div>
+      <div class="tl-windows">
+        <div class="tl-win"><b>13 Feb → mid-Apr 2026</b><span>Transmission &amp; large embedded</span></div>
+        <div class="tl-win"><b>Early Mar → end May 2026</b><span>Distribution</span></div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-wave">Wave 2 &middot; May – Nov 2026</div>
+      <div class="tl-title">Phase 1 <span>— the core 2030-delivery cohort</span></div>
+      <div class="tl-sub">The main event for large-scale investors: the projects NESO judges needed for clean power by 2030.</div>
+      <div class="tl-windows">
+        <div class="tl-win"><b>Mid-May → mid-Sep 2026</b><span>Transmission &amp; large embedded</span></div>
+        <div class="tl-win"><b>Early Jul → mid-Nov 2026</b><span>Distribution</span></div>
+      </div>
+    </div>
+    <div class="tl-item phase2">
+      <div class="tl-wave">Wave 3 &middot; Sep 2026 – Mar 2027</div>
+      <div class="tl-title">Phase 2 <span>— the 2035 cohort</span></div>
+      <div class="tl-sub">Longer-dated capacity needed by 2035. The next new-application window is expected in H2 2026.</div>
+      <div class="tl-windows">
+        <div class="tl-win"><b>Early Sep 2026 → mid-Jan 2027</b><span>Transmission &amp; large embedded</span></div>
+        <div class="tl-win"><b>Mid-Oct 2026 → mid-Mar 2027</b><span>Distribution</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="note">Dates are NESO's "latest by" windows. Source: <span class="src">NESO Connections Reform Timeline — joint industry statement, 13 Feb 2026 (updated 17 Apr 2026)</span>.</div>
+  </section>
+
+</div><!-- /#connections-module -->
+
+<!-- ============================================================ -->
+<!-- VIII. UNIFIED INVESTMENT PLAYBOOK -->
+<!-- ============================================================ -->
+<section class="investment-thesis" id="unified-playbook">
+  <div class="section-header">
+    <div class="section-title">Investment playbook</div>
+    <div class="section-number">VIII. THE TRADE &mdash; BY RISK / RETURN</div>
+  </div>
+  <p class="play-body" style="max-width:60em;margin-bottom:8px;font-size:16px;">One ranked set of strategic plays, ordered from regulated yield to opportunistic merchant. Each is tagged with the section above that evidences it.</p>
+
+  <div class="ladder">
+    <div class="ladder-tier core">
+      <div class="ladder-head"><span class="ladder-label">Core yield</span><span class="ladder-risk">Lowest risk &middot; regulated returns</span></div>
+      <div class="ladder-plays">
+        <div class="play">
+          <div class="play-title">Cap &amp; Floor assets &mdash; interconnectors &amp; LDES</div>
+          <div class="play-body">Ofgem Cap & Floor backed scheme for interconnectors and long-duration storage is a capital intensive investment with a regulated revenue floor and capped excessive profits with near-utility risk. <span class="evref">Evidence: IV (Interconnectors, LDES) &middot; VII-C overhang</span></div>
+        </div>
+        <div class="play">
+          <div class="play-title">Own the Gate 2 position</div>
+          <div class="play-body">A confirmed Gate 2 offer fixes date, point and queue position &mdash; the single largest de-risking event in the lifecycle. Target Phase 1 (2030) transmission assets receiving offers between mid-May and mid-September 2026, and price the offer itself as an asset. <span class="evref">Evidence: VII-B &middot; VII-D timeline</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ladder-tier valueadd">
+      <div class="ladder-head"><span class="ladder-label">Value-add</span><span class="ladder-risk">Moderate risk &middot; development upside</span></div>
+      <div class="ladder-plays">
+        <div class="play">
+          <div class="play-title">Readiness arbitrage &mdash; acquire &amp; advance Gate 1</div>
+          <div class="play-body">Readiness now turns on <strong>land rights and planning</strong>, not capital. Acquire Gate 1 projects with secured land/consent and push them through the readiness tests to Gate 2; buy distressed positions from holders unwilling to post security. Consolidation is policy-engineered. <span class="evref">Evidence: VII-B &middot; VII-D</span></div>
+        </div>
+        <div class="play">
+          <div class="play-title">CfD + PPA layering</div>
+          <div class="play-body">Acquire AR6/AR7-backed assets at strike, then layer a corporate PPA onto the post-CfD tail for the lowest-risk route to UK offtake at scale. <span class="evref">Evidence: II (AR7) &middot; IV (Solar, Offshore)</span></div>
+        </div>
+        <div class="play">
+          <div class="play-title">Co-location, not standalone</div>
+          <div class="play-body">Solar + BESS and wind + BESS on Gate 2 sites with existing import/export capacity. Avoid standalone merchant solar &mdash; capture-rate compression is structural, not cyclical. <span class="evref">Evidence: III (Issues) &middot; IV (Solar, BESS)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ladder-tier opportunistic">
+      <div class="ladder-head"><span class="ladder-label">Opportunistic / merchant</span><span class="ladder-risk">Highest risk &middot; market-priced</span></div>
+      <div class="ladder-plays">
+        <div class="play">
+          <div class="play-title">BESS cycling against constraint payments</div>
+          <div class="play-body">Where battery connection capacity is abundant (~153 GW unprioritised), the moat is not the connection but the trade: cycle against price spreads and constraint payments, with optimiser quality and locational basis driving returns. <span class="evref">Evidence: IV (BESS) &middot; VII-C</span></div>
+        </div>
+        <div class="play">
+          <div class="play-title">Northern constraint trades</div>
+          <div class="play-body">Long Scottish BESS priced for curtailment relief; short merchant Scottish wind until the ASTI transmission build closes the boundary gap post-2028. Floating offshore options in the Celtic Sea carry scarcity premia. <span class="evref">Evidence: VII-A map &middot; II (curtailment)</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="play-body" style="margin-top:36px;max-width:60em;opacity:0.85;font-size:13px;">
+    Counter-view: NESO's own timeline has already slipped, locational sequencing creates winners and losers by region, and the ~217 GW of projects that received Gate 1 only may re-enter via future windows &mdash; so a Gate 2 position confers timing certainty, not exclusivity. Not investment advice.
+  </p>
+</section>
+
+<footer class="colophon">
+  <div class="colophon-grid">
+    <div>
+      <h4>Methodology</h4>
+      Country data refreshed annually from official regulator and statistical sources, cross-checked against Wood Mackenzie, Rystad, BloombergNEF and IRENA. Each KPI is sourced and dated in the underlying data file.
+    </div>
+    <div>
+      <h4>Sources, United Kingdom</h4>
+      DESNZ Energy Trends; NESO Constraint &amp; Connections data; LCCC CfD AR7 results (Jan/Feb 2026); Ofgem; HM Treasury Infrastructure Strategy 2025; RenewableUK EnergyPulse; Modo Energy; Veyt PPA Market.
+    </div>
+    <div>
+      <h4>Disclosure</h4>
+      Germany and Spain figures shown in this prototype are <strong>illustrative placeholders</strong> to demonstrate the multi-country architecture. Replace with verified data before any external distribution. Not investment advice.
+    </div>
+  </div>
+  <div class="colophon-footer">
+    <span>Maxwell Advisory Energy Market Intelligence &copy; 2026</span>
+    <span>Built for institutional investors. Confidential.</span>
+  </div>
+</footer>
+
+</div><!-- /#view-dashboard -->
+
+<script>
+// Graph Default Settings
+Chart.defaults.font.family = "'PP Neue Montreal', sans-serif";
+
+// ============================================================================
+// DATA LAYER 
+// ============================================================================
+const TECH_IMAGES = {
+  solar: "https://images.unsplash.com/photo-1658298775754-5839ffd434cc?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  onshore: "https://images.unsplash.com/photo-1539758861808-109dcf40e44e?q=80&w=3431&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  offshore: "https://images.unsplash.com/photo-1548337138-e87d889cc369?q=80&w=3592&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  bess: "https://media.istockphoto.com/id/2172501561/fr/photo/centrale-à-accumulation-dénergie-au-lever-du-soleil.jpg?s=2048x2048&w=is&k=20&c=PEEQ7FtgOQzlV3l16sfxMmtI3CaKvlWq-Sa-L9TQx9Q=",
+  interconnectors: "https://cdn.ca.emap.com/wp-content/uploads/sites/9/2019/10/Brexit-interconnector-e1582895803190.jpg",
+  ldes: "https://www.energy-storage.news/wp-content/uploads/2022/02/Invinity-VS3s-at-Energy-Superhub-Oxford-1-Nov-2021.png"
+};
+
+// ============================================================================
+// DATA LAYER — dynamic fetch + localStorage cache with version check
+// (data lives in data.json, generated from Google Sheets by the converter)
+// ============================================================================
+
+const DATA_URL = "./data.json";   // Relative to the HTML, same repo
+const CACHE_KEY = "maxwell_data";
+const VERSION_KEY = "maxwell_data_version";
+
+let COUNTRY_DATA = {};
+
+async function fetchData() {
+  try {
+    const response = await fetch(DATA_URL, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+    const data = await response.json();
+    const remoteVersion = data.version;
+    const cachedVersion = localStorage.getItem(VERSION_KEY);
+
+    if (cachedVersion !== remoteVersion) {
+      console.log(`Data version changed: ${cachedVersion} → ${remoteVersion}`);
+      try {
+        localStorage.setItem(CACHE_KEY, JSON.stringify(data.countries));
+        localStorage.setItem(VERSION_KEY, remoteVersion);
+      } catch (e) {
+        console.warn("Could not write cache:", e);
+      }
+      COUNTRY_DATA = data.countries;
+    } else {
+      console.log(`Using cached data (version ${cachedVersion})`);
+      const cached = localStorage.getItem(CACHE_KEY);
+      COUNTRY_DATA = cached ? JSON.parse(cached) : data.countries;
+    }
+
+    return COUNTRY_DATA;
+  } catch (error) {
+    console.error("Failed to fetch data:", error);
+
+    // Fallback: stale cache is better than nothing
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+      console.warn("Using stale cached data due to fetch error");
+      COUNTRY_DATA = JSON.parse(cached);
+      return COUNTRY_DATA;
+    }
+
+    // Last resort: visible error state
+    document.body.innerHTML = `<div style="padding:48px;font-family:sans-serif;">
+      <h1>Data Load Error</h1>
+      <p>Could not load data.json. Please check your connection and reload.</p>
+      <p style="font-size:12px;color:#999;">${error.message}</p>
+    </div>`;
+    throw error;
+  }
+}
+
+
+// ============================================================================
+// LOGIC LAYER 
+// ============================================================================
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+let currentCountry = "GB";
+let currentTech = "solar";
+let capacityChart = null;
+let strikeChart = null;
+
+function fmt(v) {
+  if (typeof v !== 'number') return v;
+  if (Math.abs(v) >= 1000) return v.toLocaleString('en-GB', { maximumFractionDigits: 1 });
+  if (Number.isInteger(v)) return v.toString();
+  return v.toLocaleString('en-GB', { maximumFractionDigits: 2 });
+}
+
+function renderHero(d) {
+  $("#hero-country").textContent = d.meta.name;
+  $("#hero-iso").textContent = d.meta.iso;
+  $("#hero-thesis").innerHTML = annotateTerms(esc(d.thesis));
+  $("#asof-label").textContent = "As of " + d.meta.lastUpdated;
+  $("#auction-currency").textContent = d.meta.currencySymbol;
+}
+
+function renderGrid(d) {
+  $("#grid").innerHTML = annotateTerms(esc(d.grid || ""));
+}
+
+function helpIcon(text, opts) {
+  const help = (text == null || text === '') ? 'XXX' : text;
+  const safe = String(help).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const cls = (opts && opts.inline) ? 'help-wrap inline' : 'help-wrap';
+  return `<span class="${cls}" aria-label="Help">`
+       + `<span class="help-icon" role="img"></span>`
+       + `<span class="help-tooltip">${safe}</span>`
+       + `</span>`;
+}
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function helpIconRich(k) {
+  let inner = '';
+  if (k.help)    inner += `<span class="ht-def">${esc(k.help)}</span>`;
+  if (k.soWhat)  inner += `<span class="ht-sowhat"><b>Why it matters:</b> ${esc(k.soWhat)}</span>`;
+  if (k.source)  inner += `<span class="ht-src">As of ${esc(k.source)}</span>`;
+  if (!inner) inner = 'XXX';
+  return `<span class="help-wrap" aria-label="Help">`
+       + `<span class="help-icon" role="img"></span>`
+       + `<span class="help-tooltip rich">${inner}</span>`
+       + `</span>`;
+}
+
+const GLOSSARY = {
+  "BETTA": "British Electricity Trading and Transmission Arrangements — the single GB-wide wholesale market in which all power is traded.",
+  "NESO": "National Energy System Operator — the public body that runs the GB grid in real time and designs the connection queue.",
+  "Ofgem": "The Office of Gas and Electricity Markets — Britain's independent energy regulator.",
+  "CfD": "Contract for Difference — a 15-year, inflation-linked contract that tops a generator up to a fixed strike price and claws back any excess. Removes price risk.",
+  "capture rate": "The share of the average market price a generator actually earns. Falls as more of the same technology generates in the same hours.",
+  "capture rates": "The share of the average market price a generator actually earns. Falls as more of the same technology generates in the same hours.",
+  "cannibalisation": "When lots of the same technology generates at once, it drives down the very prices it earns.",
+  "TMO4+": "The reformed connections methodology (Target Model Option 4+) that re-ordered the queue around a two-gate, readiness-and-need test.",
+  "Gate 1": "An indicative grid-connection offer and queue position — no confirmed connection date yet.",
+  "Gate 2": "A firm grid-connection offer with a confirmed date, connection point and queue position — the bankability event.",
+  "constraint costs": "What the grid pays to manage bottlenecks — chiefly paying wind to switch off and gas to fire up instead.",
+  "curtailment": "Renewable power that is generated but thrown away because the grid can't carry it where it's needed.",
+  "Cap & Floor": "An Ofgem scheme guaranteeing a minimum revenue (floor) and capping the upside — utility-grade, near-regulated returns.",
+  "Cap-&-Floor": "An Ofgem scheme guaranteeing a minimum revenue (floor) and capping the upside — utility-grade, near-regulated returns.",
+  "ASTI": "Accelerated Strategic Transmission Investment — Ofgem's fast-track funding to build the wires that relieve the bottleneck.",
+  "PPA": "Power Purchase Agreement — a private long-term contract to buy a project's output, used to underpin financing.",
+  "LDES": "Long Duration Energy Storage — storage that can discharge for six hours or more.",
+  "BESS": "Battery Energy Storage Systems — grid-scale batteries that buy power cheap and sell it dear, and balance the system.",
+  "merchant": "Selling power at the open wholesale price with no fixed-price contract — higher risk, higher potential reward."
+};
+const GLOSSARY_KEYS = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
+
+function annotateTerms(html) {
+  if (!html) return html;
+  const parts = html.split(/(<[^>]+>)/g);
+  const used = new Set();
+  for (let i = 0; i < parts.length; i++) {
+    if (parts[i].startsWith('<')) continue;
+    let seg = parts[i];
+    for (const term of GLOSSARY_KEYS) {
+      if (used.has(term.toLowerCase())) continue;
+      const re = new RegExp('(^|[^\\w-])(' + term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')(?![\\w-])');
+      const m = seg.match(re);
+      if (m && m.index != null) {
+        const tip = esc(GLOSSARY[term]);
+        const repl = m[1] + '<span class="term">' + m[2]
+          + '<span class="help-tooltip term-tip">' + tip + '</span></span>';
+        seg = seg.slice(0, m.index) + repl + seg.slice(m.index + m[0].length);
+        used.add(term.toLowerCase());
+      }
+    }
+    parts[i] = seg;
+  }
+  return parts.join('');
+}
+
+function renderScorecard(d) {
+  const html = d.scorecard.map(k => {
+    const arrow = k.trend === 'up' ? '↗' : k.trend === 'down' ? '↘' : k.trend === 'warn' ? '!' : '—';
+    return `
+      <div class="kpi">
+        ${helpIconRich(k)}
+        <div class="kpi-label">${k.label}</div>
+        <div>
+          <div class="kpi-value">${fmt(k.value)}<span class="unit">${k.unit}</span></div>
+          <div class="kpi-meta">${k.meta} <span class="kpi-trend ${k.trend}">${arrow}</span></div>
+        </div>
+      </div>`;
+  }).join('');
+  $("#scorecard").innerHTML = html;
+}
+
+function renderPillars(d) {
+  const order = ['current','trajectory','strengths','issues'];
+  const html = order.map(key => {
+    const p = d.pillars[key];
+    return `
+      <div class="pillar ${p.accent}">
+        <div class="pillar-eyebrow">${p.eyebrow}</div>
+        <div class="pillar-title">${p.title}</div>
+        ${p.rows.map(r => {
+          const [l, v, h] = r;
+          return `<div class="pillar-row"><div class="ts-label-group"><span class="pillar-row-label">${l}</span>${helpIcon(h, {inline:true})}</div><span class="pillar-row-value">${v}</span></div>`;
+        }).join('')}
+      </div>`;
+  }).join('');
+  $("#pillars").innerHTML = html;
+}
+
+function renderTechTabs(d) {
+  const techKeys = ['solar','onshore','offshore','bess','interconnectors','ldes'];
+  $("#tech-tabs").innerHTML = techKeys.filter(k => d.technologies[k]).map(k => {
+    const t = d.technologies[k];
+    const active = k === currentTech ? 'active' : '';
+    return `<button class="tech-tab ${active}" data-tech="${k}">
+      <span class="tech-tab-name">${t.name}</span>
+      <span class="tech-tab-stat">${t.tabStat}</span>
+    </button>`;
+  }).join('');
+  
+  $$(".tech-tab").forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentTech = btn.dataset.tech;
+      renderTechTabs(d);
+      renderTechDetail(d);
+    });
+  });
+}
+
+function renderTechDetail(d) {
+  const t = d.technologies[currentTech];
+  const imgUrl = TECH_IMAGES[currentTech] || TECH_IMAGES.solar;
+  $("#tech-detail").innerHTML = `
+    <div class="tech-content">
+      <div class="tech-headline">${t.headline}</div>
+      <div class="tech-thesis">${annotateTerms(t.thesis)}</div>
+    </div>
+    <div class="tech-stats">
+      <img src="${imgUrl}" alt="${t.name}" class="tech-image" loading="lazy" />
+      <div class="tech-stats-content">
+        ${t.stats.map(r => {
+          const [l, v, sz, h] = r;
+          return `
+          <div class="tech-stat-row">
+            <div class="ts-label-group">
+              <span class="tech-stat-label">${l}</span>
+              ${helpIcon(h, {inline:true})}
+            </div>
+            <span class="tech-stat-value ${sz || ''}">${v}</span>
+          </div>
+        `;}).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function renderCharts(d) {
+  if (capacityChart) capacityChart.destroy();
+  if (strikeChart) strikeChart.destroy();
+  
+  const cs = d.timeSeries.capacityHistory;
+  const t = d.timeSeries.target2030;
+  const labels = cs.map(r => r.year);
+  labels.push(2030);
+  
+  const palette = {
+    solar: '#b75426',
+    onshore: '#1d5754',
+    offshore: '#2a4d72',
+    bess: '#b48a3a'
+  };
+  
+  const mkSeries = (key) => {
+    const series = cs.map(r => r[key]);
+    series.push(null);
+    return series;
+  };
+  
+  const mkTargetBand = (key) => {
+    const arr = new Array(cs.length + 1).fill(null);
+    arr[arr.length - 1] = (t[key][0] + t[key][1]) / 2;
+    return arr;
+  };
+  
+  const defaultFontFamily = "'PP Neue Montreal', sans-serif";
+
+  capacityChart = new Chart($("#capacity-chart"), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Solar', data: mkSeries('solar'), borderColor: palette.solar, backgroundColor: palette.solar, tension: 0.3, pointRadius: 3, borderWidth: 2 },
+        { label: 'Onshore wind', data: mkSeries('onshore'), borderColor: palette.onshore, backgroundColor: palette.onshore, tension: 0.3, pointRadius: 3, borderWidth: 2 },
+        { label: 'Offshore wind', data: mkSeries('offshore'), borderColor: palette.offshore, backgroundColor: palette.offshore, tension: 0.3, pointRadius: 3, borderWidth: 2 },
+        { label: 'BESS', data: mkSeries('bess'), borderColor: palette.bess, backgroundColor: palette.bess, tension: 0.3, pointRadius: 3, borderWidth: 2 },
+        { label: '2030 target (solar)', data: mkTargetBand('solar'), borderColor: palette.solar, borderDash: [3,3], borderWidth: 1, pointRadius: 6, pointStyle: 'rectRot' },
+        { label: '2030 target (onshore)', data: mkTargetBand('onshore'), borderColor: palette.onshore, borderDash: [3,3], borderWidth: 1, pointRadius: 6, pointStyle: 'rectRot' },
+        { label: '2030 target (offshore)', data: mkTargetBand('offshore'), borderColor: palette.offshore, borderDash: [3,3], borderWidth: 1, pointRadius: 6, pointStyle: 'rectRot' },
+        { label: '2030 target (BESS)', data: mkTargetBand('bess'), borderColor: palette.bess, borderDash: [3,3], borderWidth: 1, pointRadius: 6, pointStyle: 'rectRot' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, font: { family: defaultFontFamily, size: 10 }, filter: (it) => !it.text.startsWith('2030 target') } },
+        tooltip: { titleFont: { family: defaultFontFamily }, bodyFont: { family: defaultFontFamily } }
+      },
+      scales: {
+        y: { title: { display: true, text: 'GW', font: { family: defaultFontFamily, size: 10 } }, grid: { color: '#e2dcc8' }, ticks: { font: { family: defaultFontFamily, size: 10 } } },
+        x: { grid: { display: false }, ticks: { font: { family: defaultFontFamily, size: 10 } } }
+      }
+    }
+  });
+  
+  const sh = d.timeSeries.strikeHistory;
+  strikeChart = new Chart($("#strike-chart"), {
+    type: 'bar',
+    data: {
+      labels: sh.map(r => r.round),
+      datasets: [
+        { label: 'Solar', data: sh.map(r => r.solar), backgroundColor: palette.solar, borderRadius: 0 },
+        { label: 'Onshore wind', data: sh.map(r => r.onshore), backgroundColor: palette.onshore, borderRadius: 0 },
+        { label: 'Offshore wind', data: sh.map(r => r.offshore), backgroundColor: palette.offshore, borderRadius: 0 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, font: { family: defaultFontFamily, size: 10 } } }
+      },
+      scales: {
+        y: { title: { display: true, text: d.meta.currencySymbol + '/MWh', font: { family: defaultFontFamily, size: 10 } }, grid: { color: '#e2dcc8' }, ticks: { font: { family: defaultFontFamily, size: 10 } } },
+        x: { grid: { display: false }, ticks: { font: { family: defaultFontFamily, size: 10 } } }
+      }
+    }
+  });
+}
+
+function renderLoadFactors(d) {
+  const lf = d.loadFactors || [];
+  if (!lf.length) { $("#load-factors").innerHTML = ""; return; }
+  const maxVal = Math.max(...lf.map(r => Number(r.value) || 0), 1);
+  $("#load-factors").innerHTML = lf.map(r => {
+    const pct = Math.max(0, Math.min(100, (Number(r.value) / maxVal) * 100));
+    const valDisplay = (Number(r.value) === 0) ? "—" : fmt(r.value);
+    const unitDisplay = (Number(r.value) === 0) ? "" : `<span class="unit">${r.unit}</span>`;
+    return `
+      <div class="lf-card ${r.key}">
+        ${helpIcon(r.help)}
+        <div>
+          <div class="lf-card-name">${r.name}</div>
+          <div class="lf-card-value">${valDisplay}${unitDisplay}</div>
+          <div class="lf-bar"><div class="lf-bar-fill" style="width:${pct}%"></div></div>
+        </div>
+        <div class="lf-card-meta">${r.meta}<br><strong>Source:</strong> ${r.source}</div>
+      </div>`;
+  }).join('');
+}
+
+function render() {
+  const d = COUNTRY_DATA[currentCountry];
+  renderHero(d);
+  renderGrid(d);
+  renderScorecard(d);
+  renderPillars(d);
+  renderConnectionsModule();
+  renderTechTabs(d);
+  renderTechDetail(d);
+  renderLoadFactors(d);
+  renderCharts(d);
+
+  const banner = document.getElementById("placeholder-banner");
+  if (banner) banner.style.display = (currentCountry === "GB") ? "none" : "";
+  if (currentCountry === "GB") initConstraintMap();
+}
+
+function renderConnectionsModule() {
+  const mod = document.getElementById("connections-module");
+  if (!mod) return;
+  mod.style.display = (currentCountry === "GB") ? "" : "none";
+}
+
+$("#country-select").addEventListener('change', (e) => {
+  window.location.hash = '#/' + e.target.value;
+});
+
+// ============================================================================
+// MAP LAYER — Europe landing view
+// ============================================================================
+const ISO_NUM_TO_ALPHA = {
+  "008":"AL","020":"AD","040":"AT","056":"BE","070":"BA","100":"BG","112":"BY",
+  "191":"HR","196":"CY","203":"CZ","208":"DK","233":"EE","246":"FI","250":"FR",
+  "276":"DE","300":"GR","336":"VA","348":"HU","352":"IS","372":"IE",
+  "380":"IT","428":"LV","438":"LI","440":"LT","442":"LU","470":"MT","492":"MC",
+  "498":"MD","499":"ME","528":"NL","578":"NO","616":"PL","620":"PT","642":"RO",
+  "674":"SM","688":"RS","703":"SK","705":"SI","724":"ES","752":"SE",
+  "756":"CH","792":"TR","804":"UA","807":"MK","826":"GB","-99":"XK" 
+};
+
+const PROJECTION_EXCLUDE = new Set(["TR"]);
+const AVAILABLE_COUNTRIES = new Set(["GB"]);
+
+function isoForFeature(f) {
+  return ISO_NUM_TO_ALPHA[String(f.id).padStart(3, "0")]
+      || ISO_NUM_TO_ALPHA[String(f.id)];
+}
+
+function getMapPreview(iso) {
+  const d = COUNTRY_DATA[iso];
+  if (!d) return null;
+  const findKPI = (needle) => d.scorecard.find(k =>
+    k.label.toLowerCase().startsWith(needle.toLowerCase())
+  );
+  return {
+    name: d.meta.name,
+    iso: iso,
+    renewableShare: findKPI("renewable share"),
+    curtailment: findKPI("curtailment"),
+    policyRate: findKPI("bank of england policy rate") || findKPI("ecb") || findKPI("policy rate"),
+  };
+}
+
+async function initMap() {
+  const svg = document.getElementById("europe-map");
+  const loading = document.getElementById("map-loading");
+  const tooltip = document.getElementById("map-tooltip");
+  if (!svg || svg.dataset.rendered === "true") return;
+
+  let topology;
+  try {
+    const resp = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json");
+    topology = await resp.json();
+  } catch (e) {
+    loading.textContent = "Could not load map data. Check your connection and reload.";
+    console.error("Map data load failed:", e);
+    return;
+  }
+
+  const countries = topojson.feature(topology, topology.objects.countries).features;
+  const europe = countries.filter(f => isoForFeature(f));
+
+  const viewBox = svg.viewBox.baseVal;
+  const projection = d3.geoConicConformal()
+    .rotate([-15, 0])               
+    .center([0, 52])                
+    .parallels([40, 65])            
+    .scale(viewBox.width * 1.0)     
+    .translate([viewBox.width / 2 - 20, viewBox.height / 2 + 20]);
+  const pathGen = d3.geoPath(projection);
+
+  const svgD3 = d3.select(svg);
+  svgD3.selectAll("path.country")
+    .data(europe)
+    .enter()
+    .append("path")
+    .attr("class", d => {
+      const iso = isoForFeature(d);
+      const available = iso && AVAILABLE_COUNTRIES.has(iso);
+      return "country " + (available ? "available" : "inactive");
+    })
+    .attr("data-iso", d => isoForFeature(d) || "")
+    .attr("d", pathGen)
+    .on("mousemove", function(event, d) {
+      const iso = this.getAttribute("data-iso");
+      if (!iso || !AVAILABLE_COUNTRIES.has(iso)) return;
+      showTooltip(iso, event);
+    })
+    .on("mouseleave", function() {
+      hideTooltip();
+    })
+    .on("click", function(event, d) {
+      const iso = this.getAttribute("data-iso");
+      if (!iso || !AVAILABLE_COUNTRIES.has(iso)) return;
+      window.location.hash = "#/" + iso;
+    });
+
+  loading.style.display = "none";
+  svg.style.display = "block";
+  svg.dataset.rendered = "true";
+
+  function showTooltip(iso, event) {
+    const preview = getMapPreview(iso);
+    if (!preview) return;
+    const kpi = (label, k) => k
+      ? `<div class="map-tooltip-stat">
+           <span class="map-tooltip-label">${label}</span>
+           <span class="map-tooltip-value">${fmt(k.value)}<span class="unit">${k.unit}</span></span>
+         </div>`
+      : "";
+    tooltip.innerHTML = `
+      <div class="map-tooltip-eyebrow">${preview.iso}</div>
+      <div class="map-tooltip-name">${preview.name}</div>
+      ${kpi("Renewable share", preview.renewableShare)}
+      ${kpi("Curtailment, 2025", preview.curtailment)}
+      ${kpi("Policy rate", preview.policyRate)}
+      <div class="map-tooltip-cta">Click for full briefing →</div>
+    `;
+    positionTooltip(event);
+    tooltip.classList.add("visible");
+  }
+
+  function hideTooltip() {
+    tooltip.classList.remove("visible");
+  }
+
+  function positionTooltip(event) {
+    const pad = 16;
+    const w = tooltip.offsetWidth || 280;
+    const h = tooltip.offsetHeight || 200;
+    let left = event.clientX + pad;
+    let top = event.clientY + pad;
+    if (left + w > window.innerWidth - 8) left = event.clientX - pad - w;
+    if (top + h > window.innerHeight - 8) top = event.clientY - pad - h;
+    tooltip.style.left = left + "px";
+    tooltip.style.top = top + "px";
+  }
+}
+
+// ============================================================================
+// CONSTRAINT MAP — GB geography 
+// ============================================================================
+let constraintMapData = null;
+async function initConstraintMap() {
+  const svgEl = document.getElementById("constraint-map");
+  const loading = document.getElementById("constraint-loading");
+  if (!svgEl || svgEl.dataset.rendered === "true") return;
+
+  let topology = constraintMapData;
+  if (!topology) {
+    try {
+      const resp = await fetch("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json");
+      topology = await resp.json();
+      constraintMapData = topology;
+    } catch (e) {
+      if (loading) loading.textContent = "Could not load map data.";
+      console.error("Constraint map load failed:", e);
+      return;
+    }
+  }
+
+  const countries = topojson.feature(topology, topology.objects.countries).features;
+  const gb = countries.find(f => String(f.id) === "826");
+  if (!gb) { if (loading) loading.textContent = "Map unavailable."; return; }
+
+  const vb = svgEl.viewBox.baseVal;
+  const projection = d3.geoMercator().fitExtent(
+    [[28, 28], [vb.width - 28, vb.height - 28]], gb
+  );
+  const pathGen = d3.geoPath(projection);
+  const boundaryY = projection([-3.2, 55.0])[1];      
+  const [[bx0], [bx1]] = pathGen.bounds(gb);
+
+  const svg = d3.select(svgEl);
+  svg.selectAll("*").remove();
+
+  const defs = svg.append("defs");
+  defs.append("clipPath").attr("id", "clip-north").append("rect")
+    .attr("x", 0).attr("y", 0).attr("width", vb.width).attr("height", boundaryY);
+  defs.append("clipPath").attr("id", "clip-south").append("rect")
+    .attr("x", 0).attr("y", boundaryY).attr("width", vb.width).attr("height", vb.height - boundaryY);
+
+  svg.append("path").attr("d", pathGen(gb)).attr("class", "cm-north").attr("clip-path", "url(#clip-north)");
+  svg.append("path").attr("d", pathGen(gb)).attr("class", "cm-south").attr("clip-path", "url(#clip-south)");
+  
+  svg.append("path").attr("d", pathGen(gb)).attr("class", "cm-outline");
+
+  svg.append("line").attr("class", "cm-boundary")
+    .attr("x1", bx0 - 8).attr("x2", bx1 + 8)
+    .attr("y1", boundaryY).attr("y2", boundaryY);
+
+  const gen = projection([-4.2, 57.0]);   
+  const dem = projection([-0.3, 51.6]);   
+  svg.append("circle").attr("class", "cm-gen").attr("cx", gen[0]).attr("cy", gen[1]).attr("r", 5);
+  svg.append("circle").attr("class", "cm-dem").attr("cx", dem[0]).attr("cy", dem[1]).attr("r", 5);
+
+  if (loading) loading.style.display = "none";
+  svgEl.style.display = "block";
+  svgEl.dataset.rendered = "true";
+}
+
+// ============================================================================
+// ROUTING
+// ============================================================================
+function route() {
+  const raw = window.location.hash.replace(/^#\/?/, "").toUpperCase();
+  if (!raw) {
+    document.body.setAttribute("data-view", "landing");
+    initMap(); 
+    return;
+  }
+  if (COUNTRY_DATA[raw]) {
+    document.body.setAttribute("data-view", "dashboard");
+    currentCountry = raw;
+    currentTech = "solar";
+    const sel = document.getElementById("country-select");
+    if (sel && sel.value !== raw) sel.value = raw;
+    render();
+    window.scrollTo(0, 0);
+    return;
+  }
+  window.location.hash = "#/";
+}
+
+window.addEventListener("hashchange", route);
+
+(async () => {
+  document.body.style.cursor = "wait";
+  try {
+    await fetchData();
+  } finally {
+    document.body.style.cursor = "auto";
+  }
+  route();
+})();
+</script>
+
+</body>
+</html>

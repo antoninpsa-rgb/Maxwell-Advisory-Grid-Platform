@@ -28,7 +28,7 @@ jobs:
           GOOGLE_SHEETS_CREDS: ${{ secrets.GOOGLE_SHEETS_CREDS }}
           SHEET_ID: ${{ secrets.SHEET_ID }}
         run: |
-          python scripts/converter.py --sheets --countries GB DE ES -o data.json
+          python converter.py --sheets --countries GB DE ES -o data.json
 
       - name: Commit and push
         run: |
